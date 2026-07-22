@@ -1,0 +1,7 @@
+<script is:inline>
+	document.documentElement.dataset.theme = 'light';
+	try {
+		localStorage.removeItem('starlight-theme');
+	} catch {}
+	window.StarlightThemeProvider = { updatePickers() {} };
+</script>

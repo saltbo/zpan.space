@@ -10,6 +10,10 @@ export default defineConfig({
 		starlight({
 			title: 'ZPan',
 			description: 'Documentation for the open-source, S3-native file hosting platform.',
+			components: {
+				ThemeProvider: './src/components/LightThemeProvider.astro',
+				ThemeSelect: './src/components/EmptyThemeSelect.astro',
+			},
 			logo: { src: './src/assets/logo.svg', alt: 'ZPan' },
 			favicon: '/favicon.svg',
 			customCss: ['./src/styles/starlight.css'],
