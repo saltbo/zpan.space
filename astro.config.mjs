@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import { unified } from '@astrojs/markdown-remark';
 import starlight from '@astrojs/starlight';
 import sitemap from '@astrojs/sitemap';
 
@@ -21,8 +22,28 @@ function sidebarGroup(label, zhCN, items) {
 	return { label, translations: { 'zh-CN': zhCN }, items };
 }
 
+function externalLinks() {
+	/** @param {any} tree */
+	return (tree) => {
+		/** @param {any} node */
+		const visit = (node) => {
+			if (node.type === 'element' && node.tagName === 'a') {
+				const href = node.properties?.href;
+				if (typeof href === 'string' && /^https?:\/\//.test(href)) {
+					node.properties.target = '_blank';
+					node.properties.rel = ['noopener', 'noreferrer'];
+				}
+			}
+			for (const child of node.children ?? []) visit(child);
+		};
+
+		visit(tree);
+	};
+}
+
 export default defineConfig({
 	site: 'https://zpan.space',
+	markdown: { processor: unified({ rehypePlugins: [externalLinks] }) },
 	integrations: [
 		sitemap(),
 		starlight({
@@ -32,8 +53,8 @@ export default defineConfig({
 				ThemeProvider: './src/components/LightThemeProvider.astro',
 				ThemeSelect: './src/components/EmptyThemeSelect.astro',
 			},
-			logo: { src: './src/assets/logo.svg', alt: 'ZPan' },
-			favicon: '/favicon.svg',
+			logo: { src: './src/assets/logo.png', alt: 'ZPan' },
+			favicon: '/favicon.png',
 			customCss: ['./src/styles/starlight.css'],
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/saltbo/zpan' }],
 			locales: {

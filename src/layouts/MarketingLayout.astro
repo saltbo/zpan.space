@@ -17,7 +17,7 @@ const alternate = locale === 'zh-cn' ? Astro.url.pathname.replace(/^\/zh-cn/, ''
 		<meta name="viewport" content="width=device-width" />
 		<meta name="description" content={description} />
 		<meta name="theme-color" content="#f7faf9" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/png" href="/favicon.png" />
 		<link rel="alternate" hreflang={locale === 'zh-cn' ? 'en' : 'zh-CN'} href={alternate} />
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={title} />
@@ -28,35 +28,65 @@ const alternate = locale === 'zh-cn' ? Astro.url.pathname.replace(/^\/zh-cn/, ''
 	</head>
 	<body>
 		<header class="site-header">
-			<a class="brand" href={`${prefix}/`} aria-label="ZPan home">
-				<img src="/logo.svg" alt="" width="38" height="38" />
-				<span>ZPan</span>
-			</a>
-			<nav aria-label="Main navigation">
-				<a href={`${prefix}/pricing/`}>{locale === 'zh-cn' ? '定价' : 'Pricing'}</a>
-				<a href={`${prefix}/blog/`}>Blog</a>
-				<a href={`${prefix}/docs/`}>{locale === 'zh-cn' ? '文档' : 'Docs'}</a>
-				<a class="github-link" href="https://github.com/saltbo/zpan">GitHub <span aria-hidden="true">↗</span></a>
-				<a class="language-link" href={alternate}>{locale === 'zh-cn' ? 'EN' : '中文'}</a>
-				<a class="header-cta" href="https://drive.zpan.space">{locale === 'zh-cn' ? '打开云盘' : 'Open Drive'} <span aria-hidden="true">↗</span></a>
-			</nav>
+			<div class="header-inner">
+				<div class="header-left">
+					<a class="brand" href={`${prefix}/`} aria-label="ZPan home">
+						<img src="/logo.png" alt="" width="38" height="38" />
+						<span>ZPan</span>
+					</a>
+					<nav class="desktop-primary-nav" aria-label="Main navigation">
+						<a href={`${prefix}/pricing/`} aria-current={Astro.url.pathname.startsWith(`${prefix}/pricing/`) ? 'page' : undefined}>{locale === 'zh-cn' ? '定价' : 'Pricing'}</a>
+						<a href={`${prefix}/docs/`} aria-current={Astro.url.pathname.startsWith(`${prefix}/docs/`) ? 'page' : undefined}>{locale === 'zh-cn' ? '文档' : 'Docs'}</a>
+						<a href={`${prefix}/blog/`} aria-current={Astro.url.pathname.startsWith(`${prefix}/blog/`) ? 'page' : undefined}>Blog</a>
+					</nav>
+				</div>
+				<div class="header-tools">
+					<a class="drive-link" href="https://drive.zpan.space" target="_blank" rel="noopener noreferrer">Drive <span class="external-mark" aria-hidden="true">↗</span></a>
+					<a class="github-link" href="https://github.com/saltbo/zpan" target="_blank" rel="noopener noreferrer" aria-label="ZPan on GitHub">
+						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3.3-.4 6.8-1.6 6.8-7A5.4 5.4 0 0 0 19.4 4 5 5 0 0 0 19.3.5S18.2.1 15 1.8a13.4 13.4 0 0 0-6 0C5.8.1 4.7.5 4.7.5A5 5 0 0 0 4.6 4a5.4 5.4 0 0 0-1.4 3.7c0 5.4 3.5 6.6 6.8 7A4.8 4.8 0 0 0 9 18v4M9 19c-3 .9-3-1.5-4-2" /></svg>
+					</a>
+					<a class="language-switch" href={alternate} aria-label={locale === 'zh-cn' ? 'Switch to English' : '切换到简体中文'}>
+						<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.4 2.5 3.6 5.5 3.6 9s-1.2 6.5-3.6 9c-2.4-2.5-3.6-5.5-3.6-9S9.6 5.5 12 3Z" /></svg>
+					</a>
+				</div>
+				<div class="mobile-actions">
+					<details class="mobile-menu">
+						<summary aria-label={locale === 'zh-cn' ? '打开导航菜单' : 'Open navigation menu'}>
+							<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+						</summary>
+						<div class="mobile-menu-panel">
+							<nav aria-label="Mobile navigation">
+								<a href={`${prefix}/pricing/`} aria-current={Astro.url.pathname.startsWith(`${prefix}/pricing/`) ? 'page' : undefined}>{locale === 'zh-cn' ? '定价' : 'Pricing'}</a>
+								<a href={`${prefix}/docs/`} aria-current={Astro.url.pathname.startsWith(`${prefix}/docs/`) ? 'page' : undefined}>{locale === 'zh-cn' ? '文档' : 'Docs'}</a>
+								<a href={`${prefix}/blog/`} aria-current={Astro.url.pathname.startsWith(`${prefix}/blog/`) ? 'page' : undefined}>Blog</a>
+								<a href="https://drive.zpan.space" target="_blank" rel="noopener noreferrer">Drive <span aria-hidden="true">↗</span></a>
+								<a href="https://github.com/saltbo/zpan" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+							</nav>
+							<a class="mobile-language-switch" href={alternate}>
+								<span>{locale === 'zh-cn' ? 'Language' : '语言'}</span>
+								<strong>{locale === 'zh-cn' ? 'English' : '简体中文'}</strong>
+							</a>
+						</div>
+					</details>
+				</div>
+			</div>
 		</header>
 		<main>
 			<slot />
 		</main>
 		<footer class="site-footer">
 			<div>
-				<a class="brand footer-brand" href={`${prefix}/`}><img src="/logo.svg" alt="" width="34" height="34" /><span>ZPan</span></a>
+				<a class="brand footer-brand" href={`${prefix}/`}><img src="/logo.png" alt="" width="34" height="34" /><span>ZPan</span></a>
 				<p>{locale === 'zh-cn' ? '开源、S3 原生的文件托管平台。' : 'The open-source, S3-native file hosting platform.'}</p>
 			</div>
 			<div class="footer-links">
 				<a href={`${prefix}/pricing/`}>{locale === 'zh-cn' ? '定价' : 'Pricing'}</a>
 				<a href={`${prefix}/docs/`}>{locale === 'zh-cn' ? '文档' : 'Documentation'}</a>
 				<a href={`${prefix}/blog/`}>Blog</a>
-				<a href="https://drive.zpan.space">Drive</a>
-				<a href="https://cloud.zpan.space">Cloud</a>
-				<a href="https://github.com/saltbo/zpan">GitHub</a>
-				<a href="https://opencollective.com/zpan">Open Collective</a>
+				<a href="https://drive.zpan.space" target="_blank" rel="noopener noreferrer">Drive</a>
+				<a href="https://cloud.zpan.space" target="_blank" rel="noopener noreferrer">Cloud</a>
+				<a href="https://github.com/saltbo/zpan" target="_blank" rel="noopener noreferrer">GitHub</a>
+				<a href="https://opencollective.com/zpan" target="_blank" rel="noopener noreferrer">Open Collective</a>
 			</div>
 			<p class="copyright">© {new Date().getFullYear()} ZPan · AGPL-3.0</p>
 		</footer>

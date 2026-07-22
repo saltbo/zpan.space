@@ -18,5 +18,7 @@
 }
 
 header.header { border-bottom-color: rgba(110, 150, 139, .18); }
-.site-title { letter-spacing: -.04em; }
+.site-title { gap: .35rem; color: #13231f; letter-spacing: -.04em; }
+starlight-lang-select { flex: 0 0 auto; }
+starlight-lang-select select { width: 9.5rem; }
 .hero h1 { letter-spacing: -.05em; }
