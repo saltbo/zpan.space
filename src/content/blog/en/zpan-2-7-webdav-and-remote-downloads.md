@@ -47,4 +47,4 @@ Cloudflare uses Queues for archive execution; Node and Docker use their own work
 
 After upgrading, verify scheduled and background work before enabling additional entry points. Use one WebDAV password per device. Persist downloader configuration and task data, expose its configured BitTorrent port when needed, and monitor host disk capacity.
 
-The official Docker Compose already includes the downloader service. Follow the [remote downloader guide](/docs/site-management/downloaders/) and [WebDAV configuration](/docs/site-management/webdav-domain/) to connect the first clients.
+The official Docker Compose already includes the downloader service. Follow the [remote downloader guide](/docs/site-management/download-nodes/deploy/) and [WebDAV configuration](/docs/site-management/webdav-domain/) to connect the first clients.

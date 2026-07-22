@@ -30,4 +30,4 @@ Deletion enters trash, uploads have draft and completion states, batch actions c
 
 Choose Workers with D1 for the least infrastructure maintenance. Choose Docker for a private network, existing server, or local SQLite. Both still require an S3-compatible bucket and browser CORS; a successful application deploy is not complete until a real browser upload and download succeeds.
 
-Start with the [deployment decision guide](/docs/getting-started/choose-deployment/) and follow one primary deployment path end to end.
+Review the [deployment prerequisites](/docs/getting-started/prerequisites/), then follow one platform guide end to end.

@@ -71,7 +71,7 @@ const workflows = zh ? [
 			<p class="hero-intro">{copy.intro}</p>
 			<div class="hero-actions">
 				<a class="button primary" href="https://drive.zpan.space">{copy.open}<span>↗</span></a>
-				<a class="button secondary" href={`${prefix}/docs/getting-started/choose-deployment/`}>{copy.deploy}<span>→</span></a>
+				<a class="button secondary" href={`${prefix}/docs/getting-started/prerequisites/`}>{copy.deploy}<span>→</span></a>
 			</div>
 			<p class="hero-note">AGPL-3.0 · Cloudflare Workers · Docker · Any S3-compatible storage</p>
 		</div>
@@ -115,12 +115,63 @@ const workflows = zh ? [
 
 	<section class="architecture section-shell">
 		<div class="architecture-copy"><p class="eyebrow"><span></span>{zh ? 'S3 原生架构' : 'S3-native architecture'}</p><h2>{copy.archTitle}</h2><p>{copy.archText}</p><ul><li>{zh ? '浏览器直传 S3' : 'Browser-to-S3 uploads'}</li><li>{zh ? '不消耗服务端流量' : 'No server bandwidth relay'}</li><li>{zh ? '可迁移、无锁定' : 'Portable by design'}</li></ul></div>
-		<div class="flow-diagram">
-			<div class="flow-node client"><span>01</span><b>{zh ? '客户端' : 'Client'}</b><small>{zh ? '选择文件' : 'Select a file'}</small></div>
-			<div class="flow-line"><i></i><small>{zh ? '请求签名' : 'Request signature'}</small></div>
-			<div class="flow-node zpan"><img src="/logo.svg" alt="" /><b>ZPan</b><small>{zh ? '鉴权与签名' : 'Authorize & sign'}</small></div>
-			<div class="flow-line direct"><i></i><small>{zh ? '直接上传' : 'Direct upload'}</small></div>
-			<div class="flow-node storage"><span>03</span><b>S3</b><small>{zh ? '你的存储' : 'Your storage'}</small></div>
+		<div class="architecture-diagram">
+			<svg viewBox="0 0 700 420" role="img" aria-labelledby="architecture-title architecture-description">
+				<title id="architecture-title">ZPan direct-to-S3 architecture</title>
+				<desc id="architecture-description">The browser exchanges control requests and presigned URLs with ZPan, while file bytes move directly between the browser and S3-compatible object storage. ZPan stores metadata in its database.</desc>
+				<defs>
+					<marker id="arrow-control" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" /></marker>
+					<marker id="arrow-data" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" /></marker>
+				</defs>
+
+				<text class="diagram-kicker" x="35" y="34">CONTROL PLANE + DIRECT DATA PATH</text>
+
+				<path class="control-path" d="M 202 102 L 266 102" marker-end="url(#arrow-control)" />
+				<path class="control-path" d="M 266 145 L 202 145" marker-end="url(#arrow-control)" />
+				<text class="path-label" x="234" y="88" text-anchor="middle">REQUEST</text>
+				<text class="path-label" x="234" y="169" text-anchor="middle">PRESIGNED URL</text>
+
+				<path class="metadata-path" d="M 356 184 L 356 223" marker-end="url(#arrow-control)" />
+				<text class="path-label" x="371" y="210">METADATA</text>
+
+				<path class="data-path" d="M 117 183 C 117 374, 396 399, 501 319" marker-start="url(#arrow-data)" marker-end="url(#arrow-data)" />
+				<g class="data-label" transform="translate(193 344)">
+					<rect width="188" height="32" rx="16" />
+					<text x="94" y="20" text-anchor="middle">DIRECT FILE TRANSFER</text>
+				</g>
+
+				<g class="diagram-node client-node">
+					<rect x="34" y="63" width="168" height="120" rx="14" />
+					<circle cx="58" cy="87" r="6" />
+					<text class="node-kind" x="76" y="91">CLIENT</text>
+					<text class="node-title" x="58" y="131">Web browser</text>
+					<text class="node-detail" x="58" y="155">UI · uploads · downloads</text>
+				</g>
+
+				<g class="diagram-node zpan-node">
+					<rect x="266" y="47" width="180" height="137" rx="14" />
+					<circle cx="292" cy="74" r="9" />
+					<path class="zpan-mark" d="M 288 69 L 297 69 L 297 73 L 291 79 L 298 79" />
+					<text class="node-kind" x="310" y="78">CONTROL PLANE</text>
+					<text class="node-title" x="290" y="122">ZPan</text>
+					<text class="node-detail" x="290" y="148">Auth · policy · signing</text>
+				</g>
+
+				<g class="diagram-node database-node">
+					<rect x="281" y="223" width="150" height="83" rx="12" />
+					<text class="node-kind" x="302" y="250">DATABASE</text>
+					<text class="node-title small" x="302" y="276">Metadata only</text>
+					<text class="node-detail" x="302" y="294">No file bytes</text>
+				</g>
+
+				<g class="diagram-node storage-node">
+					<rect x="501" y="257" width="165" height="120" rx="14" />
+					<circle cx="526" cy="282" r="6" />
+					<text class="node-kind" x="544" y="286">DATA PLANE</text>
+					<text class="node-title" x="525" y="326">S3 storage</text>
+					<text class="node-detail" x="525" y="350">R2 · S3 · B2 · MinIO</text>
+				</g>
+			</svg>
 		</div>
 	</section>
 
@@ -131,7 +182,7 @@ const workflows = zh ? [
 
 	<section class="pricing-preview section-shell">
 		<div class="pricing-intro"><p class="eyebrow"><span></span>{zh ? '版本' : 'Editions'}</p><h2>{copy.pricingTitle}</h2><p>{copy.pricingText}</p><a class="text-link" href={`${prefix}/pricing/`}>{zh ? '比较全部版本' : 'Compare all editions'} →</a></div>
-		<div class="edition-list"><article><small>COMMUNITY</small><strong>{zh ? '免费且开源' : 'Free & open source'}</strong><p>{zh ? '适合个人、家庭和小团队自行部署。' : 'For individuals, families, and small teams that self-host.'}</p><a href={`${prefix}/docs/getting-started/choose-deployment/`}>{zh ? '开始部署' : 'Start deploying'} →</a></article><article><small>PRO / BUSINESS</small><strong>{zh ? '面向专业运营' : 'Built for operators'}</strong><p>{zh ? '品牌、审计、配额、公告和商业能力。' : 'Branding, audit, quotas, announcements, and commerce.'}</p><a href="https://cloud.zpan.space">{zh ? '前往 ZPan Cloud' : 'Get it on ZPan Cloud'} ↗</a></article></div>
+		<div class="edition-list"><article><small>COMMUNITY</small><strong>{zh ? '免费且开源' : 'Free & open source'}</strong><p>{zh ? '适合个人、家庭和小团队自行部署。' : 'For individuals, families, and small teams that self-host.'}</p><a href={`${prefix}/docs/getting-started/prerequisites/`}>{zh ? '开始部署' : 'Start deploying'} →</a></article><article><small>PRO / BUSINESS</small><strong>{zh ? '面向专业运营' : 'Built for operators'}</strong><p>{zh ? '品牌、审计、配额、公告和商业能力。' : 'Branding, audit, quotas, announcements, and commerce.'}</p><a href="https://cloud.zpan.space">{zh ? '前往 ZPan Cloud' : 'Get it on ZPan Cloud'} ↗</a></article></div>
 	</section>
 
 	<section class="latest section-shell">
@@ -139,5 +190,5 @@ const workflows = zh ? [
 		<div class="latest-grid">{posts.map((post) => <article><div class="post-meta"><span>{post.data.tags[0]}</span><span>{post.data.publishedAt.getFullYear()}</span></div><h3><a href={`${prefix}/blog/${slugFor(post.id)}/`}>{post.data.title}</a></h3><p>{post.data.description}</p><a class="read-more" href={`${prefix}/blog/${slugFor(post.id)}/`}>{zh ? '阅读全文' : 'Read article'} →</a></article>)}</div>
 	</section>
 
-	<section class="final-cta section-shell"><p class="eyebrow"><span></span>{zh ? '开始使用' : 'Get started'}</p><h2>{copy.finalTitle}</h2><p>{copy.finalText}</p><div class="hero-actions"><a class="button primary" href="https://drive.zpan.space">{copy.open}<span>↗</span></a><a class="button secondary" href={`${prefix}/docs/getting-started/choose-deployment/`}>{copy.deploy}<span>→</span></a></div></section>
+	<section class="final-cta section-shell"><p class="eyebrow"><span></span>{zh ? '开始使用' : 'Get started'}</p><h2>{copy.finalTitle}</h2><p>{copy.finalText}</p><div class="hero-actions"><a class="button primary" href="https://drive.zpan.space">{copy.open}<span>↗</span></a><a class="button secondary" href={`${prefix}/docs/getting-started/prerequisites/`}>{copy.deploy}<span>→</span></a></div></section>
 </MarketingLayout>

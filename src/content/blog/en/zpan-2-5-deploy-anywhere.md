@@ -26,4 +26,4 @@ Function filesystems are not durable databases. libSQL/Turso preserves ZPan's SQ
 
 Every target follows the same first-run product path: create the administrator, set Public URL, add storage, configure CORS, test direct upload, then add mail, OAuth, and registration policy. Database provisioning, secret storage, and scheduled jobs are the platform-specific parts.
 
-Choose Workers when you want the least maintenance and Docker when you control a host or network. Prefer another target when your organization already knows how to secure, monitor, back up, and troubleshoot it. Start with the [deployment decision guide](/docs/getting-started/choose-deployment/).
+Choose Workers when you want the least maintenance and Docker when you control a host or network. Prefer another target when your organization already knows how to secure, monitor, back up, and troubleshoot it. Review the [deployment prerequisites](/docs/getting-started/prerequisites/) before following that platform's guide.
