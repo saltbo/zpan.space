@@ -8,7 +8,7 @@ const zh = post.data.locale === 'zh-cn';
 const prefix = zh ? '/zh-cn' : '';
 const date = new Intl.DateTimeFormat(zh ? 'zh-CN' : 'en', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
 ---
-<MarketingLayout title={`${post.data.title} — ZPan`} description={post.data.description} locale={post.data.locale}>
+<MarketingLayout title={`${post.data.title} — ZPan`} description={post.data.description} locale={post.data.locale} type="article" headline={post.data.title} publishedAt={post.data.publishedAt}>
 	<article class="article-shell section-shell">
 		<a class="article-back" href={`${prefix}/blog/`}>← {zh ? '返回 Blog' : 'Back to Blog'}</a>
 		<header><div class="post-meta"><span>{date.format(post.data.publishedAt)}</span><span>{post.data.tags.join(' · ')}</span></div><h1>{post.data.title}</h1><p>{post.data.description}</p></header>
