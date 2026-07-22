@@ -8,6 +8,8 @@ interface Props {
 const { title, description, locale = 'en' } = Astro.props;
 const prefix = locale === 'zh-cn' ? '/zh-cn' : '';
 const alternate = locale === 'zh-cn' ? Astro.url.pathname.replace(/^\/zh-cn/, '') || '/' : `/zh-cn${Astro.url.pathname}`;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
+const pricingLabel = locale === 'zh-cn' ? '价格' : 'Pricing';
 ---
 
 <!doctype html>
@@ -17,16 +19,20 @@ const alternate = locale === 'zh-cn' ? Astro.url.pathname.replace(/^\/zh-cn/, ''
 		<meta name="viewport" content="width=device-width" />
 		<meta name="description" content={description} />
 		<meta name="theme-color" content="#f7faf9" />
+		<link rel="canonical" href={canonical} />
 		<link rel="icon" type="image/png" href="/favicon.png" />
 		<link rel="alternate" hreflang={locale === 'zh-cn' ? 'en' : 'zh-CN'} href={alternate} />
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:site_name" content="ZPan" />
-		<meta name="twitter:card" content="summary_large_image" />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:locale" content={locale === 'zh-cn' ? 'zh_CN' : 'en_US'} />
+		<meta name="twitter:card" content="summary" />
 		<title>{title}</title>
 	</head>
-	<body>
+		<body>
+			<a class="skip-link" href="#main-content">{locale === 'zh-cn' ? '跳到正文' : 'Skip to Content'}</a>
 		<header class="site-header">
 			<div class="header-inner">
 				<div class="header-left">
@@ -35,7 +41,7 @@ const alternate = locale === 'zh-cn' ? Astro.url.pathname.replace(/^\/zh-cn/, ''
 						<span>ZPan</span>
 					</a>
 					<nav class="desktop-primary-nav" aria-label="Main navigation">
-						<a href={`${prefix}/pricing/`} aria-current={Astro.url.pathname.startsWith(`${prefix}/pricing/`) ? 'page' : undefined}>{locale === 'zh-cn' ? '定价' : 'Pricing'}</a>
+						<a href={`${prefix}/pricing/`} aria-current={Astro.url.pathname.startsWith(`${prefix}/pricing/`) ? 'page' : undefined}>{pricingLabel}</a>
 						<a href={`${prefix}/docs/`} aria-current={Astro.url.pathname.startsWith(`${prefix}/docs/`) ? 'page' : undefined}>{locale === 'zh-cn' ? '文档' : 'Docs'}</a>
 						<a href={`${prefix}/blog/`} aria-current={Astro.url.pathname.startsWith(`${prefix}/blog/`) ? 'page' : undefined}>Blog</a>
 					</nav>
@@ -56,7 +62,7 @@ const alternate = locale === 'zh-cn' ? Astro.url.pathname.replace(/^\/zh-cn/, ''
 						</summary>
 						<div class="mobile-menu-panel">
 							<nav aria-label="Mobile navigation">
-								<a href={`${prefix}/pricing/`} aria-current={Astro.url.pathname.startsWith(`${prefix}/pricing/`) ? 'page' : undefined}>{locale === 'zh-cn' ? '定价' : 'Pricing'}</a>
+								<a href={`${prefix}/pricing/`} aria-current={Astro.url.pathname.startsWith(`${prefix}/pricing/`) ? 'page' : undefined}>{pricingLabel}</a>
 								<a href={`${prefix}/docs/`} aria-current={Astro.url.pathname.startsWith(`${prefix}/docs/`) ? 'page' : undefined}>{locale === 'zh-cn' ? '文档' : 'Docs'}</a>
 								<a href={`${prefix}/blog/`} aria-current={Astro.url.pathname.startsWith(`${prefix}/blog/`) ? 'page' : undefined}>Blog</a>
 								<a href="https://drive.zpan.space" target="_blank" rel="noopener noreferrer">Drive <span aria-hidden="true">↗</span></a>
@@ -71,7 +77,7 @@ const alternate = locale === 'zh-cn' ? Astro.url.pathname.replace(/^\/zh-cn/, ''
 				</div>
 			</div>
 		</header>
-		<main>
+			<main id="main-content">
 			<slot />
 		</main>
 		<footer class="site-footer">
@@ -80,7 +86,7 @@ const alternate = locale === 'zh-cn' ? Astro.url.pathname.replace(/^\/zh-cn/, ''
 				<p>{locale === 'zh-cn' ? '开源、S3 原生的文件托管平台。' : 'The open-source, S3-native file hosting platform.'}</p>
 			</div>
 			<div class="footer-links">
-				<a href={`${prefix}/pricing/`}>{locale === 'zh-cn' ? '定价' : 'Pricing'}</a>
+				<a href={`${prefix}/pricing/`}>{pricingLabel}</a>
 				<a href={`${prefix}/docs/`}>{locale === 'zh-cn' ? '文档' : 'Documentation'}</a>
 				<a href={`${prefix}/blog/`}>Blog</a>
 				<a href="https://drive.zpan.space" target="_blank" rel="noopener noreferrer">Drive</a>

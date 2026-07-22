@@ -1,28 +1,169 @@
 ---
 import MarketingLayout from '../layouts/MarketingLayout.astro';
+import { getLicenseQuoteCatalog, type LicenseEdition } from '../pricing';
+
 interface Props { locale?: 'en' | 'zh-cn' }
 const { locale = 'en' } = Astro.props;
 const zh = locale === 'zh-cn';
 const prefix = zh ? '/zh-cn' : '';
-const tiers = zh ? [
-	{ name: 'Community', label: '开源版', summary: '免费、自托管，适合个人、家庭和小团队。', features: ['文件管理、预览与搜索', '图床与自定义域名', '安全分享与 WebDAV', '个人空间与团队空间', '七种部署目标'], action: '开始部署', href: `${prefix}/docs/getting-started/prerequisites/` },
-	{ name: 'Pro', label: '专业版', summary: '面向公开服务和专业运营者的控制能力。', features: ['Community 的全部功能', '开放注册与反滥用', '品牌与白标能力', '审计日志与更高限额', '云端许可证管理'], action: '购买 Pro', href: 'https://cloud.zpan.space', featured: true },
-	{ name: 'Business', label: '商业版', summary: '面向需要配额、商业化和更复杂运营的团队。', features: ['Pro 的全部功能', '配额商品与充值卡', '积分与余额体系', '站内公告', '商业运营能力'], action: '获取商业版', href: 'https://cloud.zpan.space' },
+const { catalog, isMock } = await getLicenseQuoteCatalog();
+const currencies = [...new Set(catalog.offers.map((offer) => offer.currency))];
+const defaultCurrency = currencies.includes(zh ? 'CNY' : 'USD') ? (zh ? 'CNY' : 'USD') : currencies[0];
+const formatPrice = (amountMinor: number, currency: string) => {
+	const formatter = new Intl.NumberFormat(zh ? 'zh-CN' : 'en-US', { style: 'currency', currency, maximumFractionDigits: 0 });
+	const fractionDigits = new Intl.NumberFormat(zh ? 'zh-CN' : 'en-US', { style: 'currency', currency }).resolvedOptions().maximumFractionDigits ?? 2;
+	return formatter.format(amountMinor / 10 ** fractionDigits);
+};
+
+const tiers: Array<{
+	id: 'community' | LicenseEdition;
+	name: string;
+	label: string;
+	summary: string;
+	features: string[];
+	action: string;
+	featured?: boolean;
+}> = zh ? [
+	{ id: 'community', name: 'Community', label: '开源版', summary: '个人、家庭和小团队完整自托管。', features: ['文件管理、预览与搜索', '图床与自定义域名', '安全分享与 WebDAV', '个人空间与团队空间', '7 种部署目标'], action: '开始自托管' },
+	{ id: 'pro', name: 'Pro', label: '推荐 · 专业版', summary: '为公开服务补齐品牌、安全与治理能力。', features: ['Community 的全部功能', '开放注册与反滥用', '品牌与白标能力', '审计日志与更高限额', 'Cloud 许可证管理'], action: '购买 Pro 许可证', featured: true },
+	{ id: 'business', name: 'Business', label: '商业版', summary: '为商业化运营增加配额、余额与商品体系。', features: ['Pro 的全部功能', '配额商品与充值卡', '积分与余额体系', '站内公告', '商业运营能力'], action: '购买 Business 许可证' },
 ] : [
-	{ name: 'Community', label: 'OPEN SOURCE', summary: 'Free and self-hosted for individuals, families, and small teams.', features: ['File manager, previews, and search', 'Image hosting and custom domains', 'Secure sharing and WebDAV', 'Personal and team spaces', 'All seven deployment targets'], action: 'Start deploying', href: `${prefix}/docs/getting-started/prerequisites/` },
-	{ name: 'Pro', label: 'FOR OPERATORS', summary: 'Controls for public services and professional operators.', features: ['Everything in Community', 'Open registration and anti-abuse', 'Branding and white label', 'Audit logs and higher limits', 'Cloud license management'], action: 'Get Pro', href: 'https://cloud.zpan.space', featured: true },
-	{ name: 'Business', label: 'FOR COMMERCE', summary: 'For teams that need quotas, commerce, and deeper operations.', features: ['Everything in Pro', 'Quota products and gift cards', 'Credits and balance system', 'In-app announcements', 'Commercial operations'], action: 'Get Business', href: 'https://cloud.zpan.space' },
+	{ id: 'community', name: 'Community', label: 'OPEN SOURCE', summary: 'Complete self-hosting for individuals, families, and small teams.', features: ['File manager, previews, and search', 'Image hosting and custom domains', 'Secure sharing and WebDAV', 'Personal and team spaces', '7 deployment targets'], action: 'Start self-hosting' },
+	{ id: 'pro', name: 'Pro', label: 'RECOMMENDED · PRO', summary: 'Add branding, safety, and governance to a public service.', features: ['Everything in Community', 'Open registration and anti-abuse', 'Branding and white label', 'Audit logs and higher limits', 'Cloud license management'], action: 'Buy a Pro License', featured: true },
+	{ id: 'business', name: 'Business', label: 'BUSINESS', summary: 'Add quotas, balances, and products for commercial operations.', features: ['Everything in Pro', 'Quota products and gift cards', 'Credits and balance system', 'In-app announcements', 'Commercial operations'], action: 'Buy a Business License' },
 ];
-const rows = zh ? [
-	['文件管理、图床、分享、WebDAV', '✓', '✓', '✓'], ['开源自托管', '✓', '✓', '✓'], ['开放注册与反滥用', '—', '✓', '✓'], ['白标与审计', '—', '✓', '✓'], ['配额与商业能力', '—', '—', '✓'],
+
+const comparisonGroups = zh ? [
+	{ title: '核心文件能力', rows: [['文件管理、预览与搜索', '✓', '✓', '✓'], ['图床、分享与 WebDAV', '✓', '✓', '✓'], ['个人与团队空间', '✓', '✓', '✓']] },
+	{ title: '运营管理', rows: [['开放注册与反滥用', '—', '✓', '✓'], ['品牌与白标', '—', '✓', '✓'], ['审计日志与更高限额', '—', '✓', '✓']] },
+	{ title: '商业能力', rows: [['配额商品与充值卡', '—', '—', '✓'], ['积分与余额体系', '—', '—', '✓'], ['站内公告', '—', '—', '✓']] },
 ] : [
-	['File manager, image hosting, sharing, WebDAV', '✓', '✓', '✓'], ['Open-source self-hosting', '✓', '✓', '✓'], ['Open registration and anti-abuse', '—', '✓', '✓'], ['White label and audit', '—', '✓', '✓'], ['Quotas and commerce', '—', '—', '✓'],
+	{ title: 'Core Files', rows: [['File management, previews, and search', '✓', '✓', '✓'], ['Image hosting, sharing, and WebDAV', '✓', '✓', '✓'], ['Personal and team spaces', '✓', '✓', '✓']] },
+	{ title: 'Operations', rows: [['Open registration and anti-abuse', '—', '✓', '✓'], ['Branding and white label', '—', '✓', '✓'], ['Audit logs and higher limits', '—', '✓', '✓']] },
+	{ title: 'Commerce', rows: [['Quota products and gift cards', '—', '—', '✓'], ['Credits and balances', '—', '—', '✓'], ['In-app announcements', '—', '—', '✓']] },
 ];
 ---
-<MarketingLayout title={zh ? '定价与版本 — ZPan' : 'Pricing & editions — ZPan'} description={zh ? '比较 ZPan Community、Pro 和 Business，选择适合你的部署方式。' : 'Compare ZPan Community, Pro, and Business and choose how you want to run it.'} locale={locale}>
-	<section class="pricing-hero section-shell"><p class="eyebrow"><span></span>{zh ? '简单的版本划分' : 'Straightforward editions'}</p><h1>{zh ? '先拥有数据，再选择能力。' : 'Own your data. Choose the controls you need.'}</h1><p>{zh ? '核心文件能力始终可开源自托管。需要公开运营、品牌、审计或商业能力时，再升级到 Pro 或 Business。' : 'Core file capabilities remain open-source and self-hostable. Upgrade when you need public operations, branding, auditing, or commerce.'}</p></section>
-	<section class="tier-grid section-shell">{tiers.map((tier) => <article class:list={['tier-card', { featured: tier.featured }]}><span class="tier-label">{tier.label}</span><h2>{tier.name}</h2><p class="tier-price">{tier.summary}</p><ul>{tier.features.map((feature) => <li>{feature}</li>)}</ul><a class:list={['button', tier.featured ? 'primary' : 'secondary']} href={tier.href}>{tier.action} {tier.href.startsWith('http') ? '↗' : '→'}</a></article>)}</section>
-	<section class="managed-note section-shell"><div><h2>{zh ? '官方托管不是第四个版本。' : 'Managed hosting is not a fourth edition.'}</h2><p>{zh ? '它是一种交付方式：不想维护基础设施时，直接使用官方托管的 ZPan Drive；需要购买和管理 Pro 或 Business 许可证时，前往 ZPan Cloud。' : 'It is a delivery choice. Use the official ZPan Drive when you do not want to maintain infrastructure; use ZPan Cloud to buy and manage Pro or Business licenses.'}</p></div><div class="hero-actions"><a class="button primary" href="https://drive.zpan.space" target="_blank" rel="noopener noreferrer">{zh ? '打开云盘' : 'Open Drive'} ↗</a><a class="button secondary" href="https://cloud.zpan.space" target="_blank" rel="noopener noreferrer">ZPan Cloud ↗</a></div></section>
-	<section class="comparison section-shell"><h2>{zh ? '版本对比' : 'Compare editions'}</h2><table class="comparison-table"><thead><tr><th>{zh ? '能力' : 'Capability'}</th><th>Community</th><th>Pro</th><th>Business</th></tr></thead><tbody>{rows.map((row) => <tr>{row.map((cell) => <td class:list={{ yes: cell === '✓' }}>{cell}</td>)}</tr>)}</tbody></table></section>
-	<section class="faq section-shell"><h2>{zh ? '常见问题' : 'Questions, answered'}</h2><div class="faq-grid"><article><h3>{zh ? 'Community 会一直免费吗？' : 'Will Community remain free?'}</h3><p>{zh ? '会。Community 以 AGPL-3.0 发布，核心文件、图床、分享和 WebDAV 能力可自行部署。' : 'Yes. Community is released under AGPL-3.0 and keeps the core file, image hosting, sharing, and WebDAV workflows self-hostable.'}</p></article><article><h3>{zh ? '价格在哪里查看？' : 'Where can I see current prices?'}</h3><p>{zh ? 'Pro 与 Business 的最新价格、币种和购买周期以 ZPan Cloud 结算页面为准，官网不复制可能过期的数字。' : 'ZPan Cloud is the source of truth for current Pro and Business prices, currencies, and billing terms.'}</p></article><article><h3>{zh ? '付费版会托管我的文件吗？' : 'Do paid editions host my files?'}</h3><p>{zh ? '不会。购买许可证与存储位置是两件事。自托管时，文件仍在你选择的 S3 存储中。' : 'Not by itself. Licensing and file location are separate. With self-hosting, files stay in the S3 storage you choose.'}</p></article><article><h3>{zh ? '可以先体验再部署吗？' : 'Can I try ZPan before deploying?'}</h3><p>{zh ? '可以。打开 drive.zpan.space 使用官方托管版本，再决定是继续托管还是迁移到自己的部署。' : 'Yes. Open drive.zpan.space to use the official hosted version, then decide whether to stay managed or deploy your own.'}</p></article></div></section>
+
+<MarketingLayout title={zh ? '价格 — ZPan' : 'Pricing — ZPan'} description={zh ? '比较 ZPan Community、Pro 和 Business 自托管版本与许可证价格。' : 'Compare ZPan Community, Pro, and Business self-hosted editions and license pricing.'} locale={locale}>
+	<section class="pricing-hero section-shell">
+		<p class="eyebrow"><span></span>{zh ? '自托管 ZPan' : 'Self-host ZPan'}</p>
+		<h1>{(zh ? ['把 ZPan 运行在', '自己的基础设施上。'] : ['Run ZPan on your', 'own infrastructure.']).map((line) => <span class="heading-line">{line}</span>)}</h1>
+		<p>{zh ? '使用免费的 Community 部署完整的 ZPan，连接自己的 S3 存储并掌控应用、数据库、文件和域名。需要更多运营能力时，再选择 Pro 或 Business。' : 'Deploy the complete ZPan with the free Community edition, connect your own S3 storage, and control the app, database, files, and domain. Choose Pro or Business only when you need more operational controls.'}</p>
+		<div class="pricing-scope-note">
+			<strong>{zh ? '自托管本身免费。' : 'Self-hosting is free.'}</strong>
+			<span>{zh ? '下方价格仅用于 Pro 与 Business 许可证，不包含对象存储、流量或基础设施费用。' : 'Prices below cover Pro and Business licenses only. Object storage, traffic, and infrastructure are separate.'}</span>
+			<a href="https://drive.zpan.space/sign-up" target="_blank" rel="noopener noreferrer">{zh ? '只想使用云盘？打开 ZPan Drive' : 'Just need a drive? Open ZPan Drive'} <span aria-hidden="true">↗</span></a>
+		</div>
+	</section>
+
+	<section class="self-host-guide section-shell" aria-labelledby="self-host-guide-title">
+		<div class="self-host-guide-head"><p class="eyebrow"><span></span>{zh ? '选择运行方式' : 'Choose a runtime'}</p><h2 id="self-host-guide-title">{zh ? '从熟悉的平台开始。' : 'Start on a platform you know.'}</h2><p>{zh ? 'Cloudflare Workers 适合免服务器维护的部署；Docker 适合已有服务器、NAS 或私有网络。两种方式运行同一个 ZPan。' : 'Cloudflare Workers suits serverless deployments. Docker suits existing servers, NAS devices, and private networks. Both run the same ZPan.'}</p></div>
+		<div class="self-host-paths">
+			<article><img src="https://cdn.simpleicons.org/cloudflare/F38020" alt="" width="32" height="32" loading="lazy" /><div><small>{zh ? '推荐' : 'RECOMMENDED'}</small><h3>Cloudflare Workers</h3><p>Workers · D1 · Queues</p></div><a href={`${prefix}/docs/deployment/cloudflare/`}>{zh ? '查看部署方式' : 'View Deployment'} <span aria-hidden="true">→</span></a></article>
+			<article><img src="https://cdn.simpleicons.org/docker/2496ED" alt="" width="32" height="32" loading="lazy" /><div><small>{zh ? '通用自托管' : 'UNIVERSAL'}</small><h3>Docker</h3><p>Node.js · SQLite · Your server</p></div><a href={`${prefix}/docs/deployment/docker/`}>{zh ? '查看部署方式' : 'View Deployment'} <span aria-hidden="true">→</span></a></article>
+		</div>
+		<ol class="self-host-steps">
+			<li><span>01</span><div><h3>{zh ? '部署 Community' : 'Deploy Community'}</h3><p>{zh ? '选择 Cloudflare、Docker 或其他受支持平台启动 ZPan。' : 'Launch ZPan on Cloudflare, Docker, or another supported platform.'}</p></div></li>
+			<li><span>02</span><div><h3>{zh ? '连接 S3 存储' : 'Connect S3 Storage'}</h3><p>{zh ? '添加自己的 R2、S3、B2、Tigris、MinIO 或其他兼容存储。' : 'Add your R2, S3, B2, Tigris, MinIO, or other compatible storage.'}</p></div></li>
+			<li><span>03</span><div><h3>{zh ? '按需升级许可证' : 'Upgrade When Needed'}</h3><p>{zh ? '需要公开运营、品牌、审计或商业能力时，再购买 Pro 或 Business。' : 'Buy Pro or Business when you need public operations, branding, auditing, or commerce.'}</p></div></li>
+		</ol>
+	</section>
+
+	<section class="pricing-options section-shell" aria-labelledby="pricing-options-title" data-pricing-root data-default-currency={defaultCurrency}>
+		<div class="pricing-options-head">
+			<div><p class="eyebrow"><span></span>{zh ? '报价' : 'Quotes'}</p><h2 id="pricing-options-title">{zh ? '透明的许可证价格' : 'Transparent License Pricing'}</h2></div>
+			<div class="pricing-controls" aria-label={zh ? '报价显示选项' : 'Pricing display options'}>
+				<div class="segmented-control" role="group" aria-label={zh ? '币种' : 'Currency'}>{currencies.map((currency) => <button type="button" data-price-filter="currency" data-value={currency} aria-pressed={currency === defaultCurrency}>{currency}</button>)}</div>
+				<div class="segmented-control" role="group" aria-label={zh ? '计费周期' : 'Billing period'}>
+					<button type="button" data-price-filter="billing" data-value="month" aria-pressed="false">{zh ? '月付' : 'Monthly'}</button>
+					<button type="button" data-price-filter="billing" data-value="year" aria-pressed="true">{zh ? '年付' : 'Yearly'}</button>
+				</div>
+			</div>
+		</div>
+		{isMock && <p class="mock-notice" role="status">{zh ? '示例价格 · ZPan Cloud 公开报价接口上线后将自动替换' : 'Example prices · Replaced automatically when the public ZPan Cloud pricing API launches'}</p>}
+
+		<div class="tier-grid">{tiers.map((tier) => {
+			const offers = tier.id === 'community' ? [] : catalog.offers.filter((offer) => offer.edition === tier.id);
+			return <article class:list={['tier-card', { featured: tier.featured }]} data-tier={tier.id}>
+				<span class="tier-label">{tier.label}</span>
+				<h3>{tier.name}</h3>
+				<p class="tier-summary">{tier.summary}</p>
+				<div class="price-slot">
+					{tier.id === 'community'
+						? currencies.map((currency) => <div class="price-option" data-price-option data-currency={currency} data-billing="month" data-free-price hidden={currency !== defaultCurrency}><strong>{formatPrice(0, currency)}</strong><span>{zh ? '永久' : 'forever'}</span></div>)
+						: offers.map((offer) => <div class="price-option" data-price-option data-currency={offer.currency} data-billing={offer.billingPeriod} data-checkout={offer.checkoutUrl} hidden={offer.currency !== defaultCurrency || offer.billingPeriod !== 'year'}><strong>{formatPrice(offer.amountMinor, offer.currency)}</strong><span>/{offer.billingPeriod === 'year' ? (zh ? '年' : 'year') : (zh ? '月' : 'month')}</span></div>)}
+				</div>
+				<ul>{tier.features.map((feature) => <li>{feature}</li>)}</ul>
+				<a class:list={['button', tier.featured ? 'primary' : 'secondary']} data-purchase-link={tier.id !== 'community' ? '' : undefined} href={tier.id === 'community' ? `${prefix}/docs/getting-started/quick-start/` : offers.find((offer) => offer.currency === defaultCurrency && offer.billingPeriod === 'year')?.checkoutUrl} target={tier.id === 'community' ? undefined : '_blank'} rel={tier.id === 'community' ? undefined : 'noopener noreferrer'}>{tier.action} <span aria-hidden="true">{tier.id === 'community' ? '→' : '↗'}</span></a>
+			</article>;
+		})}</div>
+		<p class="pricing-footnote">{zh ? '金额为许可证报价，不包含税费、对象存储和基础设施成本。最终结算信息以 ZPan Cloud 为准。' : 'License prices exclude taxes, object storage, and infrastructure. ZPan Cloud shows the final billing terms.'}</p>
+	</section>
+
+	<section class="comparison section-shell" aria-labelledby="comparison-title">
+		<h2 id="comparison-title">{zh ? '版本能力对比' : 'Compare Edition Capabilities'}</h2>
+		<div class="comparison-desktop">
+			<table class="comparison-table">
+				<caption>{zh ? 'Community、Pro 和 Business 版本能力对比' : 'Capability comparison for Community, Pro, and Business'}</caption>
+				<thead><tr><th scope="col">{zh ? '能力' : 'Capability'}</th><th scope="col">Community</th><th scope="col">Pro</th><th scope="col">Business</th></tr></thead>
+				<tbody>{comparisonGroups.map((group) => <><tr class="comparison-group"><th scope="rowgroup" colspan="4">{group.title}</th></tr>{group.rows.map((row) => <tr><th scope="row">{row[0]}</th>{row.slice(1).map((cell) => <td class:list={{ yes: cell === '✓' }}><span class="sr-only">{cell === '✓' ? (zh ? '包含' : 'Included') : (zh ? '不包含' : 'Not included')}</span><span aria-hidden="true">{cell}</span></td>)}</tr>)}</>)}</tbody>
+			</table>
+		</div>
+		<div class="comparison-mobile">{tiers.map((tier, tierIndex) => <article><h3>{tier.name}</h3><dl>{comparisonGroups.flatMap((group) => group.rows).map((row) => <div><dt>{row[0]}</dt><dd class:list={{ yes: row[tierIndex + 1] === '✓' }}>{row[tierIndex + 1] === '✓' ? (zh ? '包含' : 'Included') : (zh ? '不包含' : 'Not included')}</dd></div>)}</dl></article>)}</div>
+	</section>
+
+	<section class="faq section-shell">
+		<h2>{zh ? '购买前常见问题' : 'Questions Before You Buy'}</h2>
+		<div class="faq-grid">
+			<article><h3>{zh ? 'Community 会一直免费吗？' : 'Will Community Remain Free?'}</h3><p>{zh ? '会。Community 以 AGPL-3.0 发布，核心文件、图床、分享和 WebDAV 能力可自行部署。' : 'Yes. Community is released under AGPL-3.0 and keeps core file, image hosting, sharing, and WebDAV workflows self-hostable.'}</p></article>
+			<article><h3>{zh ? '许可证会托管我的文件吗？' : 'Does a License Host My Files?'}</h3><p>{zh ? '不会。许可证只解锁运营能力。应用、数据库、S3 凭据和文件仍在你选择的基础设施中。' : 'No. A license unlocks operational controls. Your app, database, S3 credentials, and files stay on your infrastructure.'}</p></article>
+			<article><h3>{zh ? '可以先试用再购买吗？' : 'Can I Evaluate Before Buying?'}</h3><p>{zh ? '可以。先部署 Community 验证文件工作流；确定需要公开运营、品牌或商业能力时再升级。' : 'Yes. Deploy Community and validate your file workflow, then upgrade when you need public operations, branding, or commerce.'}</p></article>
+			<article><h3>{zh ? '可以从 Pro 升级到 Business 吗？' : 'Can I Upgrade From Pro to Business?'}</h3><p>{zh ? '可以。许可证由 ZPan Cloud 管理，升级不会移动自托管文件或改变存储位置。' : 'Yes. ZPan Cloud manages the license; upgrading does not move self-hosted files or change their storage location.'}</p></article>
+		</div>
+	</section>
+
+	<section class="final-cta section-shell pricing-final"><p class="eyebrow"><span></span>{zh ? '先验证，再升级' : 'Evaluate First'}</p><h2>{zh ? '从完整免费的 Community 开始。' : 'Start With the Complete, Free Community Edition.'}</h2><p>{zh ? '用真实文件跑通部署、上传和分享，再为确实需要的运营能力购买许可证。' : 'Run deployment, upload, and sharing with real files before paying for the controls you actually need.'}</p><div class="hero-actions"><a class="button primary" href={`${prefix}/docs/getting-started/quick-start/`}>{zh ? '开始自托管' : 'Start Self-hosting'} <span aria-hidden="true">→</span></a><a class="button secondary" href="https://drive.zpan.space/sign-up" target="_blank" rel="noopener noreferrer">{zh ? '直接使用云盘' : 'Use the Hosted Drive'} <span aria-hidden="true">↗</span></a></div></section>
 </MarketingLayout>
+
+<script>
+	const root = document.querySelector('[data-pricing-root]');
+	if (root instanceof HTMLElement) {
+		const supportedCurrencies = [...root.querySelectorAll('[data-price-filter="currency"]')].map((element) => element.getAttribute('data-value'));
+		const params = new URLSearchParams(window.location.search);
+		let currency = supportedCurrencies.includes(params.get('currency')) ? params.get('currency') : root.dataset.defaultCurrency;
+		let billing = params.get('billing') === 'month' ? 'month' : 'year';
+
+		const update = () => {
+			root.querySelectorAll('[data-price-filter]').forEach((element) => {
+				if (!(element instanceof HTMLButtonElement)) return;
+				const selected = element.dataset.value === (element.dataset.priceFilter === 'currency' ? currency : billing);
+				element.setAttribute('aria-pressed', String(selected));
+			});
+
+			root.querySelectorAll('[data-tier]').forEach((tier) => {
+				tier.querySelectorAll('[data-price-option]').forEach((element) => {
+					if (!(element instanceof HTMLElement)) return;
+					const selected = element.dataset.currency === currency && (element.hasAttribute('data-free-price') || element.dataset.billing === billing);
+					element.hidden = !selected;
+				});
+				const selectedOption = [...tier.querySelectorAll('[data-price-option]')].find((element) => element instanceof HTMLElement && !element.hidden);
+				const link = tier.querySelector('[data-purchase-link]');
+				if (link instanceof HTMLAnchorElement && selectedOption instanceof HTMLElement && selectedOption.dataset.checkout) link.href = selectedOption.dataset.checkout;
+			});
+
+			const nextParams = new URLSearchParams(window.location.search);
+			nextParams.set('currency', currency ?? '');
+			nextParams.set('billing', billing);
+			window.history.replaceState({}, '', `${window.location.pathname}?${nextParams}`);
+		};
+
+		root.querySelectorAll('[data-price-filter]').forEach((element) => element.addEventListener('click', () => {
+			if (!(element instanceof HTMLButtonElement)) return;
+			if (element.dataset.priceFilter === 'currency') currency = element.dataset.value;
+			if (element.dataset.priceFilter === 'billing') billing = element.dataset.value ?? 'year';
+			update();
+		}));
+
+		update();
+	}
+</script>

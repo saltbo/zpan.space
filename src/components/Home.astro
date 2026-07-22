@@ -1,65 +1,59 @@
 ---
-import { getCollection } from 'astro:content';
 import MarketingLayout from '../layouts/MarketingLayout.astro';
 
 interface Props { locale?: 'en' | 'zh-cn' }
 const { locale = 'en' } = Astro.props;
 const zh = locale === 'zh-cn';
 const prefix = zh ? '/zh-cn' : '';
-const posts = (await getCollection('blog', ({ data }) => data.locale === locale && !data.draft))
-	.sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf()).slice(0, 3);
-const slugFor = (id: string) => id.replace(`${locale}/`, '').replace(/\.(md|mdx)$/, '');
 
 const copy = zh ? {
-	title: 'ZPan — 把任意 S3 存储变成你的文件平台',
-	description: '开源、S3 原生的文件托管平台。管理文件、搭建图床、安全分享，并部署在自己的基础设施上。',
-	eyebrow: '开源 · S3 原生 · 可自托管',
-	headline: '让你的 S3，真正好用起来。',
-	intro: 'ZPan 为任意 S3 兼容存储提供现代文件管理、图床、分享、WebDAV 和远程下载。文件从浏览器直传存储，不消耗应用服务器带宽。',
-	open: '打开官方云盘', deploy: '自行部署',
-	proof: '一个应用，覆盖完整的文件工作流',
-	workflowTitle: '不只是上传文件。',
-	workflowIntro: '从日常文件管理到面向外部的分享与图片链接，ZPan 把常用能力放进一个干净、可控的平台。',
-	archTitle: '文件走最短的路。',
-	archText: 'ZPan 负责身份、权限、元数据和签名；客户端通过预签名 URL 直接与 S3 通信。更少的中转、更低的服务器成本，也没有存储厂商锁定。',
-	deployTitle: '部署在你已经信任的基础设施上。',
-	deployText: '首选 Cloudflare Workers + D1，也可用 Docker 或部署到 AWS、Vercel、Netlify、Azure 与 Google Cloud。',
-	pricingTitle: '从个人使用，到经营一项服务。',
-	pricingText: 'Community 永久开源；Pro 与 Business 为运营者提供品牌、审计、配额和商业能力。',
-	blogTitle: 'ZPan 的最新进展',
-	finalTitle: '先用起来，再决定如何部署。',
-	finalText: '直接打开官方托管版本，或者用十分钟在自己的 Cloudflare 账户中启动 ZPan。',
+	title: 'ZPan — 云盘的选择，到 ZPan 为止',
+	description: '开放、可靠、可自由迁移。ZPan 希望成为你最后选择的云盘。',
+	eyebrow: '开源 · S3 原生 · 托管或自部署',
+	headline: ['云盘的选择，', '到 ZPan 为止'],
+	intro: 'Z 是最后一个字母。我们希望 ZPan 也是你的最后一个云盘选择：开放、可靠、可自由迁移，不靠锁定留住你，只让时间证明它值得一直用下去。',
+	open: '打开 ZPan Drive', deploy: '部署 ZPan',
+	workflowTitle: '管理、分享和使用你的文件。',
+	workflowIntro: '一个应用覆盖日常文件管理和对外分享。图片、视频、文档与团队文件都使用一致的权限和存储模型。',
+	archTitle: '文件直达存储，不必绕远路。',
+	archText: 'ZPan 负责身份、权限、元数据和签名；上传与下载通过预签名 URL，直接在浏览器和 S3 存储之间完成。文件不经过应用服务器中转，存储始终独立、可迁移。',
 } : {
-	title: 'ZPan — Turn any S3 bucket into your file platform',
-	description: 'The open-source, S3-native file platform for managing files, hosting images, sharing securely, and deploying on your infrastructure.',
-	eyebrow: 'Open source · S3 native · Self-hostable',
-	headline: 'Your S3, finally easy to use.',
-	intro: 'ZPan adds a modern file manager, image hosting, secure sharing, WebDAV, and remote downloads to any S3-compatible storage. Files travel directly from the browser to your bucket.',
-	open: 'Open hosted Drive', deploy: 'Deploy yourself',
-	proof: 'One application for the whole file workflow',
-	workflowTitle: 'More than a place to upload.',
-	workflowIntro: 'From everyday file management to public links and image workflows, ZPan brings the essentials into one focused platform you control.',
-	archTitle: 'Your files take the shortest route.',
-	archText: 'ZPan handles identity, permissions, metadata, and signing. Clients then communicate directly with S3 through presigned URLs—less transit, lower server cost, and no storage lock-in.',
-	deployTitle: 'Run it on infrastructure you already trust.',
-	deployText: 'Cloudflare Workers with D1 is the primary target. Docker, AWS, Vercel, Netlify, Azure, and Google Cloud are supported too.',
-	pricingTitle: 'From personal files to running a service.',
-	pricingText: 'Community stays open source. Pro and Business add the controls operators need for branding, auditing, quotas, and commerce.',
-	blogTitle: 'What is new in ZPan',
-	finalTitle: 'Try it first. Choose how to run it later.',
-	finalText: 'Open the official hosted drive now, or launch ZPan in your own Cloudflare account in about ten minutes.',
+	title: 'ZPan — Your search for a cloud drive ends here',
+	description: 'Open, dependable, and yours to move. ZPan is built to be the final cloud drive you ever choose.',
+	eyebrow: 'Open source · S3 native · Hosted or self-hosted',
+	headline: ['Your search for a', 'cloud drive ends with ZPan.'],
+	intro: 'Z is the final letter. We want ZPan to be the final cloud drive you ever choose: open, dependable, and yours to move. It will never lock you in—it should earn its place for years to come.',
+	open: 'Open ZPan Drive', deploy: 'Deploy ZPan',
+	workflowTitle: 'Manage, share, and use your files.',
+	workflowIntro: 'One application covers everyday file management and external sharing. Photos, videos, documents, and team files use one consistent permission and storage model.',
+	archTitle: 'Files go straight to storage.',
+	archText: 'ZPan handles identity, permissions, metadata, and signing. Uploads and downloads move directly between the browser and S3 through presigned URLs, keeping storage independent and portable.',
 };
 
-const workflows = zh ? [
-	['文件云盘', '按文件夹管理图片、视频、音乐与文档，支持搜索、预览、回收站和团队空间。', '01'],
-	['图床', '连接 PicGo、PicList、uPic、ShareX 或 API，在自己的域名下生成稳定图片链接。', '02'],
-	['安全分享', '创建公开页或直链，并设置密码、有效期、下载次数与文件夹浏览。', '03'],
-	['WebDAV 与远程下载', '挂载到现有客户端，或让服务端在后台把远程文件直接保存到存储。', '04'],
+const productFeatures = zh ? [
+	{ number: '01', icon: '▣', kicker: '文件管理', title: ['所有文件，', '一处管理。'], text: '图片、视频、音乐和文档统一放进 ZPan。使用文件夹、搜索、预览和回收站，让每个文件都清楚可见、随时可找。', points: ['文件夹与全局搜索', '图片、视频、音频与文档预览', '回收站与文件恢复'] },
+	{ number: '02', icon: '↗', kicker: '安全分享', title: ['分享出去，', '控制权依然在你手里。'], text: '创建清晰的分享页或直接下载链接，并按场景设置访问边界。分享不是交出控制权，而是把文件安全地送到需要的人手中。', points: ['密码与有效期', '下载次数限制', '文件夹浏览权限'] },
+	{ number: '03', icon: '◇', kicker: '图片托管', title: ['不只是存图片，', '更要让图片长期可用。'], text: '在自己的域名下生成稳定图片链接，并接入你已经习惯的上传工具。图片的存储位置、访问方式和域名都由你决定。', points: ['自定义图片域名', 'PicGo、PicList、uPic 与 ShareX', '开放上传 API'] },
+	{ number: '04', icon: '⌁', kicker: 'WebDAV 与 API', title: ['不只在浏览器里使用。'], text: '通过 WebDAV 把 ZPan 挂载到系统和第三方客户端；通过 API Key 接入脚本、应用和自动化工作流。', points: ['Finder 与文件管理器', '兼容 WebDAV 客户端', 'API Key 与外部集成'] },
+	{ number: '05', icon: '↓', kicker: '远程下载', title: ['把下载交给 ZPan。'], text: '提交远程地址后，下载节点在后台获取文件并保存到对象存储。关闭浏览器，任务仍会继续执行。', points: ['后台持续运行', '独立下载节点', '完成后自动入库'] },
+	{ number: '06', icon: '◎', kicker: '个人与团队空间', title: ['个人文件与团队协作，', '各有边界。'], text: '个人空间保持私有；团队空间拥有独立的成员、角色、文件和配额。一个 ZPan，同时服务个人与团队。', points: ['独立个人空间', '团队成员与角色', '分离的文件和配额'] },
 ] : [
-	['S3 web drive', 'Organize images, video, music, and documents with search, previews, trash, and team spaces.', '01'],
-	['Image hosting', 'Connect PicGo, PicList, uPic, ShareX, or the API for durable image URLs on your domain.', '02'],
-	['Secure sharing', 'Publish landing pages or direct links with passwords, expiration, download limits, and folder browsing.', '03'],
-	['WebDAV & remote downloads', 'Mount ZPan in existing clients or let background workers save remote files straight to storage.', '04'],
+	{ number: '01', icon: '▣', kicker: 'File management', title: ['Every file,', 'managed in one place.'], text: 'Keep photos, videos, music, and documents together in ZPan. Folders, search, previews, and trash keep every file visible and easy to find.', points: ['Folders and global search', 'Image, video, audio, and document previews', 'Trash and file recovery'] },
+	{ number: '02', icon: '↗', kicker: 'Secure sharing', title: ['Share files without', 'giving up control.'], text: 'Create clear sharing pages or direct download links, then define the right access boundary for each situation.', points: ['Passwords and expiration', 'Download limits', 'Folder browsing permissions'] },
+	{ number: '03', icon: '◇', kicker: 'Image hosting', title: ['Store images and keep', 'their links dependable.'], text: 'Create stable image URLs on your own domain and connect the upload tools you already use. You control storage, access, and naming.', points: ['Custom image domains', 'PicGo, PicList, uPic, and ShareX', 'Open upload API'] },
+	{ number: '04', icon: '⌁', kicker: 'WebDAV & API', title: ['Use ZPan beyond', 'the browser.'], text: 'Mount ZPan in system and third-party clients through WebDAV, or connect scripts, applications, and automation with API keys.', points: ['Finder and file managers', 'Compatible WebDAV clients', 'API keys and integrations'] },
+	{ number: '05', icon: '↓', kicker: 'Remote downloads', title: ['Let ZPan handle', 'the download.'], text: 'Submit a remote URL and a download node fetches the file in the background before saving it to object storage.', points: ['Runs in the background', 'Independent download nodes', 'Automatic storage import'] },
+	{ number: '06', icon: '◎', kicker: 'Personal & team spaces', title: ['Keep personal files', 'and teamwork separate.'], text: 'Personal spaces stay private. Team spaces have independent members, roles, files, and quotas. One ZPan serves both.', points: ['Private personal spaces', 'Team members and roles', 'Separate files and quotas'] },
+];
+
+const platforms = [
+	['Cloudflare Workers', 'https://cdn.simpleicons.org/cloudflare/F38020'],
+	['Docker', 'https://cdn.simpleicons.org/docker/2496ED'],
+	['AWS', 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg'],
+	['Vercel', 'https://cdn.simpleicons.org/vercel/000000'],
+	['Netlify', 'https://cdn.simpleicons.org/netlify/00C7B7'],
+	['Microsoft Azure', 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azure/azure-original.svg'],
+	['Google Cloud', 'https://cdn.simpleicons.org/googlecloud/4285F4'],
 ];
 ---
 
@@ -67,19 +61,19 @@ const workflows = zh ? [
 	<section class="hero section-shell">
 		<div class="hero-copy">
 			<p class="eyebrow"><span></span>{copy.eyebrow}</p>
-			<h1>{copy.headline}</h1>
+			<h1>{copy.headline.map((line) => <span class="heading-line">{line}</span>)}</h1>
 			<p class="hero-intro">{copy.intro}</p>
 			<div class="hero-actions">
-				<a class="button primary" href="https://drive.zpan.space" target="_blank" rel="noopener noreferrer">{copy.open}<span>↗</span></a>
-				<a class="button secondary" href={`${prefix}/docs/getting-started/prerequisites/`}>{copy.deploy}<span>→</span></a>
+				<a class="button primary" href="https://drive.zpan.space" target="_blank" rel="noopener noreferrer">{copy.open}<span aria-hidden="true">↗</span></a>
+				<a class="button secondary" href="#self-host">{copy.deploy}<span aria-hidden="true">↓</span></a>
 			</div>
-			<p class="hero-note">AGPL-3.0 · Cloudflare Workers · Docker · Any S3-compatible storage</p>
+			<p class="hero-note">{zh ? '官方托管可直接使用 · AGPL-3.0 · 支持任意 S3 兼容存储' : 'Official hosting available · AGPL-3.0 · Any S3-compatible storage'}</p>
 		</div>
-		<div class="product-window" aria-label={zh ? 'ZPan 文件管理界面示意' : 'ZPan file manager preview'}>
+		<div class="product-window" role="img" aria-label={zh ? 'ZPan 文件管理界面示意' : 'ZPan file manager preview'}>
 			<div class="window-bar"><span></span><span></span><span></span><b>drive.zpan.space</b></div>
 			<div class="app-shell">
 				<aside class="app-sidebar">
-					<div class="mini-brand"><img src="/logo.png" alt="" />ZPan</div>
+					<div class="mini-brand"><img src="/logo.png" alt="" width="21" height="21" />ZPan</div>
 					<p>{zh ? '文件' : 'FILES'}</p>
 					<div class="side-item active">▣ <span>{zh ? '我的文件' : 'My Files'}</span></div>
 					<div class="side-item">▧ <span>{zh ? '图片' : 'Photos'}</span></div>
@@ -91,7 +85,7 @@ const workflows = zh ? [
 					<div class="storage-meter"><small>{zh ? '存储空间' : 'Storage'}</small><i><b></b></i><span>3.2 GB / 10 GB</span></div>
 				</aside>
 				<div class="file-panel">
-					<div class="panel-head"><div><strong>{zh ? '我的文件' : 'My Files'}</strong><small>{zh ? '所有文件' : 'All files'}</small></div><div class="panel-actions"><span>⌕</span><button>＋ {zh ? '上传' : 'Upload'}</button></div></div>
+					<div class="panel-head"><div><strong>{zh ? '我的文件' : 'My Files'}</strong><small>{zh ? '所有文件' : 'All files'}</small></div><div class="panel-actions"><span aria-hidden="true">⌕</span><span class="preview-upload">＋ {zh ? '上传' : 'Upload'}</span></div></div>
 					<div class="crumb">⌂ &nbsp;/&nbsp; design</div>
 					<div class="file-table-head"><span>{zh ? '名称' : 'Name'}</span><span>{zh ? '大小' : 'Size'}</span><span>{zh ? '更新时间' : 'Updated'}</span></div>
 					<div class="file-row"><i class="folder">◆</i><b>brand-assets</b><span>—</span><em>{zh ? '刚刚' : 'Just now'}</em></div>
@@ -101,16 +95,6 @@ const workflows = zh ? [
 				</div>
 			</div>
 		</div>
-	</section>
-
-	<section class="platform-strip section-shell">
-		<p>{copy.proof}</p>
-		<div><span>Cloudflare</span><span>Docker</span><span>Amazon S3</span><span>Cloudflare R2</span><span>Backblaze B2</span><span>Tigris</span></div>
-	</section>
-
-	<section class="features section-shell">
-		<div class="section-heading"><div><p class="eyebrow"><span></span>{zh ? '核心工作流' : 'Core workflows'}</p><h2>{copy.workflowTitle}</h2></div><p>{copy.workflowIntro}</p></div>
-		<div class="feature-grid">{workflows.map(([title, text, number]) => <article class="feature-card"><small>{number}</small><div class="feature-icon">{number === '01' ? '▣' : number === '02' ? '◇' : number === '03' ? '↗' : '↓'}</div><h3>{title}</h3><p>{text}</p></article>)}</div>
 	</section>
 
 	<section class="architecture section-shell">
@@ -174,20 +158,20 @@ const workflows = zh ? [
 		</div>
 	</section>
 
-	<section class="deployment section-shell">
-		<div><p class="eyebrow"><span></span>{zh ? '七种部署目标' : 'Seven deployment targets'}</p><h2>{copy.deployTitle}</h2><p>{copy.deployText}</p><a class="text-link" href={`${prefix}/docs/deployment/cloudflare/`}>{zh ? '查看部署文档' : 'Explore deployment guides'} →</a></div>
-		<div class="deploy-list"><article class="featured"><small>{zh ? '首选' : 'PRIMARY'}</small><strong>Cloudflare Workers</strong><span>Workers · D1 · Zero server maintenance</span></article><article><small>{zh ? '自托管' : 'SELF-HOSTED'}</small><strong>Docker</strong><span>Node.js · SQLite · Your own server</span></article><p>AWS · Vercel · Netlify · Azure · Google Cloud</p></div>
+	<section class="platform-marquee" aria-labelledby="platform-heading">
+		<div class="platform-marquee-head section-shell"><p class="eyebrow"><span></span>{zh ? '多平台部署' : 'Deploy anywhere'}</p><h2 id="platform-heading">{zh ? '运行在你选择的基础设施上。' : 'Run on the infrastructure you choose.'}</h2></div>
+		<div class="platform-track-mask">
+			<div class="platform-track">{[...platforms, ...platforms].map(([name, icon], index) => <div class="platform-item" aria-hidden={index >= platforms.length ? 'true' : undefined}><img src={icon} alt="" width="25" height="25" loading="lazy" /><span>{name}</span></div>)}</div>
+		</div>
 	</section>
 
-	<section class="pricing-preview section-shell">
-		<div class="pricing-intro"><p class="eyebrow"><span></span>{zh ? '版本' : 'Editions'}</p><h2>{copy.pricingTitle}</h2><p>{copy.pricingText}</p><a class="text-link" href={`${prefix}/pricing/`}>{zh ? '比较全部版本' : 'Compare all editions'} →</a></div>
-		<div class="edition-list"><article><small>COMMUNITY</small><strong>{zh ? '免费且开源' : 'Free & open source'}</strong><p>{zh ? '适合个人、家庭和小团队自行部署。' : 'For individuals, families, and small teams that self-host.'}</p><a href={`${prefix}/docs/getting-started/prerequisites/`}>{zh ? '开始部署' : 'Start deploying'} →</a></article><article><small>PRO / BUSINESS</small><strong>{zh ? '面向专业运营' : 'Built for operators'}</strong><p>{zh ? '品牌、审计、配额、公告和商业能力。' : 'Branding, audit, quotas, announcements, and commerce.'}</p><a href="https://cloud.zpan.space" target="_blank" rel="noopener noreferrer">{zh ? '前往 ZPan Cloud' : 'Get it on ZPan Cloud'} ↗</a></article></div>
+	<section class="product-story section-shell" aria-labelledby="product-features-heading">
+		<header class="product-story-head"><p class="eyebrow"><span></span>{zh ? '产品功能' : 'Product features'}</p><h2 id="product-features-heading">{copy.workflowTitle}</h2><p>{copy.workflowIntro}</p></header>
+		<div class="product-feature-list">{productFeatures.map((feature, index) => <article class:list={['product-feature', { reverse: index % 2 === 1 }]}>
+			<div class="product-feature-copy"><div class="feature-kicker"><span>{feature.number}</span>{feature.kicker}</div><h3>{feature.title.map((line) => <span class="heading-line">{line}</span>)}</h3><p>{feature.text}</p><ul>{feature.points.map((point) => <li>{point}</li>)}</ul></div>
+			<div class="product-feature-visual" aria-hidden="true"><div class="visual-toolbar"><span></span><span></span><span></span><small>ZPAN / {feature.kicker.toUpperCase()}</small></div><div class="visual-feature-mark">{feature.icon}</div><strong>{feature.kicker}</strong><div class="visual-feature-rows">{feature.points.map((point, pointIndex) => <div><span>{String(pointIndex + 1).padStart(2, '0')}</span><b>{point}</b><i>✓</i></div>)}</div></div>
+		</article>)}</div>
 	</section>
 
-	<section class="latest section-shell">
-		<div class="latest-head"><div><p class="eyebrow"><span></span>Blog</p><h2>{copy.blogTitle}</h2></div><a class="text-link" href={`${prefix}/blog/`}>{zh ? '查看全部文章' : 'All articles'} →</a></div>
-		<div class="latest-grid">{posts.map((post) => <article><div class="post-meta"><span>{post.data.tags[0]}</span><span>{post.data.publishedAt.getFullYear()}</span></div><h3><a href={`${prefix}/blog/${slugFor(post.id)}/`}>{post.data.title}</a></h3><p>{post.data.description}</p><a class="read-more" href={`${prefix}/blog/${slugFor(post.id)}/`}>{zh ? '阅读全文' : 'Read article'} →</a></article>)}</div>
-	</section>
-
-	<section class="final-cta section-shell"><p class="eyebrow"><span></span>{zh ? '开始使用' : 'Get started'}</p><h2>{copy.finalTitle}</h2><p>{copy.finalText}</p><div class="hero-actions"><a class="button primary" href="https://drive.zpan.space" target="_blank" rel="noopener noreferrer">{copy.open}<span>↗</span></a><a class="button secondary" href={`${prefix}/docs/getting-started/prerequisites/`}>{copy.deploy}<span>→</span></a></div></section>
+	<section class="final-cta self-host-cta section-shell" id="self-host"><p class="eyebrow"><span></span>{zh ? '自托管 ZPan' : 'Self-host ZPan'}</p><h2>{zh ? '最后的选择，也可以完全属于你。' : 'Your final choice can belong entirely to you.'}</h2><p>{zh ? 'ZPan Community 开源且免费。把完整的 ZPan 部署到自己的基础设施，连接自己的 S3 存储，让应用、数据库、文件和域名都由自己掌控。需要品牌、审计、公开运营或商业能力时，再升级到 Pro 或 Business。' : 'ZPan Community is open source and free. Run the complete platform on your infrastructure, connect your own S3 storage, and control the app, database, files, and domain. Upgrade to Pro or Business only when you need branding, auditing, public operations, or commerce.'}</p><div class="hero-actions"><a class="button primary" href={`${prefix}/pricing/`}>{zh ? '查看自托管方案' : 'Explore Self-hosting'} <span aria-hidden="true">→</span></a><a class="button secondary" href={`${prefix}/docs/getting-started/prerequisites/`}>{zh ? '阅读部署文档' : 'Read Deployment Docs'} <span aria-hidden="true">→</span></a></div></section>
 </MarketingLayout>
