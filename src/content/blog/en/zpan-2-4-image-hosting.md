@@ -1,23 +1,19 @@
 ---
-title: "ZPan 2.4: your own image hosting workflow"
-description: "Custom domains, galleries, API keys, and uploader integrations turn an S3 bucket into a practical image host."
+title: "ZPan 2.4: image hosting is more than an upload endpoint"
+description: "API keys, path templates, custom domains, and desktop integrations turn an S3 bucket into a maintainable publishing workflow."
 publishedAt: 2026-04-22
 locale: en
 tags: [Releases, v2.4]
 ---
 
-Image hosting is often the first reason developers and writers reach for object storage. ZPan 2.4 made that workflow a first-class part of the product instead of a side effect of file uploads.
+Developers and writers rarely lack a bucket capable of storing an image. The missing part is a dependable publishing path: capture, upload immediately, organize objects, copy a stable URL, and revoke one device without rotating an account password.
 
-## Upload from the tools you already use
+ZPan 2.4 made image hosting a first-class workflow. It reuses the existing users, spaces, direct-to-S3 path, and permissions while adding image configuration, gallery management, API keys, custom domains, and tool integrations.
 
-The release added API-key authentication and integrations for tools such as PicGo, PicList, uPic, ShareX, and Flameshot. A screenshot can move from the desktop to your S3 bucket and clipboard without opening a browser.
+PicGo, PicList, uPic, ShareX, Flameshot, and custom scripts can each use a separate key. Plaintext is shown once and the server stores a hash. The integration page generates the required headers, form fields, and response mapping without persisting the pasted key.
 
-## Publish on your own domain
+Path templates keep a long-lived library maintainable. Organize blog assets by article or date and screenshots under their own prefix. A template change affects new objects only; it should not silently rename old objects and break published URLs.
 
-Custom-domain support lets image URLs carry your identity instead of a vendor's. The image gallery provides a focused place to browse and manage uploaded assets while the underlying objects remain in storage you control.
+Custom domains separate public identity from the storage provider and make future backend changes easier. Operators still need to validate DNS, HTTPS, caching, content type, and migration of old links. Referer and MIME rules reduce casual misuse but do not make a public image private.
 
-## One storage layer, multiple workflows
-
-Image hosting uses the same authentication, direct-upload architecture, metadata, and storage configuration as the rest of ZPan. There is no second service to operate and no separate copy of the file.
-
-See the [image hosting guide](/docs/guides/image-hosting/) to connect a client.
+Start only after the underlying storage and CORS test passes. Enable image hosting, choose storage and a path template, create a dedicated key, and upload one test image from the intended client. Verify the returned URL, content type, cache behavior, and revocation before moving a daily workflow. See the [image hosting guide](/docs/guides/image-hosting/).

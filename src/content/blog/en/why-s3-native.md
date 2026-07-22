@@ -1,26 +1,31 @@
 ---
-title: "Why S3-native is more than a storage checkbox"
-description: "Direct uploads, portable data, and a clean control plane make object storage a powerful foundation for self-hosted file workflows."
+title: "Why S3-native means more than another storage driver"
+description: "Presigned transfer, metadata boundaries, backup, and portability explain how S3 shapes ZPan's product architecture."
 publishedAt: 2026-07-15
 locale: en
 tags: [Engineering, S3]
 ---
 
-Calling a product “S3 compatible” often means it can copy files to a bucket. For ZPan, S3 shapes the entire architecture.
+For many products, “S3 support” means copying local files into a bucket for backup. In ZPan, S3 is the file data plane. That distinction determines the transfer path, database responsibility, deployment cost, and migration model.
 
-## Separate control from data
+The database stores users, spaces, directory metadata, shares, quotas, and jobs. The bucket stores file bytes. For an upload, ZPan verifies permission, creates a session, and returns presigned instructions. The browser transfers directly to S3 and then completes the object with ZPan.
 
-ZPan is the control plane: identities, permissions, metadata, sharing rules, and presigned requests. Object storage is the data plane: the actual bytes and the work of transferring them.
+Application bandwidth therefore does not scale with file size. Object storage handles transfer and multipart behavior while the control plane remains focused.
 
-Keeping those responsibilities separate has practical benefits:
+## Two parts of one consistent system
 
-- Large uploads do not consume application server bandwidth.
-- Storage can scale independently from the web application.
-- Operators can choose providers based on region, price, or policy.
-- Moving away from ZPan does not require exporting proprietary blobs.
+S3-native does not mean operators should rename or delete objects directly in the provider console. Object keys are implementation details; names, folders, permissions, and trash state live in the database. Out-of-band bucket changes break that relationship.
 
-## Bring the storage that fits
+Backups need both sides. Database backups protect structure and authorization; bucket versioning or replication protects content. Neither alone is a complete site recovery.
 
-Amazon S3, Cloudflare R2, Backblaze B2, Tigris, MinIO, and many other products expose the same fundamental API. Their details differ, but ZPan does not need a custom storage implementation for every cloud.
+## CORS belongs to the data path
 
-That portability is the point: the application should make your storage useful without making your data less yours.
+Direct browser uploads require the bucket to allow the production ZPan origin to send `PUT`, `POST`, `GET`, and `HEAD` and read `ETag`. This is not an optional optimization.
+
+The common failure is an admin console that works while uploads fail: browser preflight is rejected, or the configured endpoint only resolves inside Docker. ZPan's storage test uploads a temporary object from the current browser and cleans it up, validating signing, browser networking, CORS, and bucket permission together.
+
+## Compatibility still has edges
+
+AWS S3, R2, B2, Tigris, MinIO, and RustFS share core APIs but differ in region, endpoint, path style, public delivery, and some multipart behavior. Templates reduce setup work while options such as Force Path Style preserve necessary differences.
+
+Portability comes from knowing each boundary, not from pretending migration is automatic. The application runtime can change, SQLite-family databases can move deliberately, bucket objects can be copied, and a stable public domain can remain in front. S3-native means object storage owns files while ZPan makes them manageable, shareable, and operable.

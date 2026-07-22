@@ -23,17 +23,39 @@ export default defineConfig({
 			sidebar: [
 				{
 					label: 'Start here',
+					translations: { 'zh-CN': '从这里开始' },
 					items: [
-						{ label: 'Overview', slug: 'docs' },
-						{ label: 'Quick start', slug: 'docs/getting-started/quick-start' },
+						{ label: 'Overview', translations: { 'zh-CN': '概览' }, slug: 'docs' },
+						{
+							label: 'Quick start',
+							translations: { 'zh-CN': '快速开始' },
+							slug: 'docs/getting-started/quick-start',
+						},
+						{
+							label: 'Choose a deployment',
+							translations: { 'zh-CN': '选择部署方式' },
+							slug: 'docs/getting-started/choose-deployment',
+						},
 					],
 				},
 				{
-					label: 'Deploy',
+					label: 'Deployment',
+					translations: { 'zh-CN': '部署' },
 					items: [{ autogenerate: { directory: 'docs/deployment' } }],
 				},
 				{
-					label: 'Use ZPan',
+					label: 'Configuration',
+					translations: { 'zh-CN': '配置' },
+					items: [{ autogenerate: { directory: 'docs/configuration' } }],
+				},
+				{
+					label: 'Administrator guide',
+					translations: { 'zh-CN': '站长指南' },
+					items: [{ autogenerate: { directory: 'docs/admin' } }],
+				},
+				{
+					label: 'User guides',
+					translations: { 'zh-CN': '使用指南' },
 					items: [{ autogenerate: { directory: 'docs/guides' } }],
 				},
 			],

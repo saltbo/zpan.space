@@ -1,33 +1,34 @@
 ---
-title: "Meet ZPan: file hosting that starts with your storage"
-description: "Why we are building a focused, open-source file platform on top of S3—and what makes it different from another cloud drive."
+title: "Meet ZPan: turn your S3 into a usable file platform"
+description: "What ZPan solves, who it serves, and why it deliberately avoids becoming another all-purpose cloud drive."
 publishedAt: 2026-07-22
 locale: en
 tags: [Product, Open source]
 ---
 
-Most file platforms begin by asking you to move your data into somebody else's system. ZPan begins with a different question: **what if the storage is already yours?**
+Object storage is durable, inexpensive, and effectively unlimited, but a bucket console is not how people want to manage files. Bucket names, object keys, and access keys are infrastructure concepts.
 
-ZPan is an open-source, S3-native file hosting platform. Connect an S3-compatible bucket, deploy the application, and get a modern interface for uploading, organizing, serving, and sharing files.
+ZPan adds the missing control plane: file trees, users and teams, image hosting, controlled sharing, WebDAV, and remote downloads on top of any S3-compatible storage.
 
-## Focused by design
+## A deliberate S3-only boundary
 
-We are not trying to build another all-purpose cloud drive. ZPan focuses on three workflows where simple, reliable file infrastructure matters:
+ZPan does not aggregate consumer drive accounts and does not treat a server directory as the primary file root. R2, S3, B2, Tigris, MinIO, and RustFS share a durable object API, allowing the product to focus on file workflows rather than chasing third-party login and provider changes.
 
-- **Image hosting** for developers, bloggers, and screenshot workflows.
-- **File sharing** with polished links, passwords, expiration, and limits.
-- **Automation** through APIs, WebDAV, and agent-friendly tooling.
+Use a collaboration suite when you need online document editing, mail, and calendar; use a directory browser for local server files; use a provider aggregator when many consumer drives are the core requirement. ZPan is for an S3-backed file service.
 
-That focus lets the architecture stay small enough to understand and operate yourself.
+## Direct transfer, focused control
 
-## The direct route to S3
+ZPan creates an upload session and presigned instructions, then the browser sends bytes directly to S3. Downloads use object storage whenever possible. The application owns identity, permission, directory metadata, quota, and sharing without becoming the bandwidth relay.
 
-When you upload a file, ZPan authorizes the request and creates a presigned URL. Your browser then uploads directly to object storage. The application server never becomes a bandwidth bottleneck.
+That architecture makes Cloudflare Workers a practical primary runtime. Docker provides the same product for private networks and existing hosts.
 
-This architecture is particularly effective on Cloudflare Workers, but it is not tied to Cloudflare. Docker deployments and a broad range of S3-compatible providers remain first-class options.
+## Four core workflows
 
-## Open from the first commit
+- **S3 web drive:** folders, search, preview, trash, and team spaces.
+- **Image hosting:** dedicated API keys and integrations for common capture tools.
+- **Controlled sharing:** landing pages, direct links, password, expiration, limits, and folder browsing.
+- **External access:** WebDAV clients and independent remote-download nodes.
 
-ZPan is released under AGPL-3.0. You can inspect it, deploy it, modify it, and help shape what comes next. Your storage credentials stay in your deployment, your files stay in your bucket, and your domain stays under your control.
+Community keeps the core AGPL-3.0 self-hosted product. Pro adds operator controls such as branding, open registration, and audit; Business adds commercial quota and credit capabilities. The official [ZPan Drive](https://drive.zpan.space) is a managed delivery option, not a fourth edition.
 
-Start with the [quick-start guide](/docs/getting-started/quick-start/) or explore the project on [GitHub](https://github.com/saltbo/zpan).
+For a first installation, complete one path before enabling everything: deploy Workers or Docker, create the administrator, set Public URL, add a bucket, pass the browser upload test, and create a share. Continue with the [quick start](/docs/getting-started/quick-start/) or inspect the project on [GitHub](https://github.com/saltbo/zpan).

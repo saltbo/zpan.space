@@ -1,46 +1,17 @@
 ---
 title: Quick start
-description: Choose Cloudflare Workers or Docker and deploy your first ZPan instance.
+description: Deploy ZPan and verify one real sign-in, storage, upload, and sharing path.
+sidebar:
+  order: 2
 ---
 
-ZPan supports several runtimes. For most personal deployments, start with **Cloudflare Workers**. Choose **Docker** when you already operate a server or want everything on your own network.
+The finish line is not merely seeing the ZPan home page. Complete one browser upload into your own S3 bucket and open a protected share from a private browser window.
 
-## Cloudflare Workers
+1. Choose [Cloudflare Workers](/docs/deployment/cloudflare/) for minimal server maintenance or [Docker](/docs/deployment/docker/) for a host, NAS, or private network.
+2. Open the deployment and register immediately. The first account on a new database becomes administrator.
+3. Set the final HTTPS Public URL under **Admin Console → Settings → Site identity**.
+4. Add a bucket under **Admin Console → Storages**, configure [browser CORS](/docs/configuration/storage/), and run the full create/upload/cleanup test.
+5. From Files, create a folder, upload a small file, refresh, download it, move it through trash, and restore it.
+6. Create a password-protected landing share with a short expiration and download it from a private window.
 
-1. [Fork the ZPan repository](https://github.com/saltbo/zpan/fork).
-2. Open **Settings → Secrets and variables → Actions** in your fork.
-3. Add `CLOUDFLARE_ACCOUNT_ID`.
-4. Add a `CLOUDFLARE_API_TOKEN` with Workers Scripts, D1, and R2 edit permissions.
-5. Open **Actions → Deploy to Cloudflare Workers** and run the workflow.
-
-The workflow creates the required Worker and database resources. Once it finishes, open the deployment URL and register the first user. The first account becomes the administrator.
-
-## Docker
-
-Download the maintained Compose file and start it:
-
-```sh
-curl -O https://raw.githubusercontent.com/saltbo/zpan/main/deploy/docker-compose.yml
-docker compose up -d
-```
-
-Then open `http://localhost:8222` and register the first account.
-
-## Connect storage
-
-After signing in as an administrator:
-
-1. Open **Admin → Storage**.
-2. Add your S3 endpoint, bucket, region, access key, and secret key.
-3. Test the connection and save it.
-4. Upload a small file from the Files page.
-
-:::caution[The endpoint must be browser-accessible]
-Uploads go directly from the user's browser to S3. A Docker-only hostname such as `minio:9000` will not work in a browser; use a public hostname or `localhost` during local development.
-:::
-
-## Next steps
-
-- [Set up image hosting](/docs/guides/image-hosting/)
-- [Create your first share](/docs/guides/file-sharing/)
-- [Review Docker deployment](/docs/deployment/docker/)
+Only after this path succeeds should you add email, OAuth, teams, WebDAV, image hosting, or downloaders. Enable one capability at a time and keep a normal test account for validating the user-visible result.

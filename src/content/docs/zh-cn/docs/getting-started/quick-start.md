@@ -1,38 +1,50 @@
 ---
 title: 快速开始
-description: 选择 Cloudflare Workers 或 Docker，部署第一个 ZPan 实例。
+description: 用最短路径部署 ZPan，并完成一次真实的登录、存储、上传和分享验证。
+sidebar:
+  order: 2
 ---
 
-对于大多数个人部署，建议从 **Cloudflare Workers** 开始。如果你已经有服务器，或者希望所有组件都运行在自己的网络中，可以选择 **Docker**。
+这份快速开始的完成标准不是“看到 ZPan 首页”，而是从浏览器上传一个文件到自己的 S3 Bucket，再创建一个可以从无痕窗口打开的分享链接。
 
-## Cloudflare Workers
+## 1. 选择一条部署路径
 
-1. [Fork ZPan 仓库](https://github.com/saltbo/zpan/fork)。
-2. 在 Fork 中打开 **Settings → Secrets and variables → Actions**。
-3. 添加 `CLOUDFLARE_ACCOUNT_ID`。
-4. 添加具有 Workers Scripts、D1 和 R2 编辑权限的 `CLOUDFLARE_API_TOKEN`。
-5. 打开 **Actions → Deploy to Cloudflare Workers** 并运行工作流。
+- 不想维护服务器：使用 [Cloudflare Workers](/zh-cn/docs/deployment/cloudflare/)。
+- 已经有 VPS、NAS 或内网环境：使用 [Docker](/zh-cn/docs/deployment/docker/)。
 
-工作流会创建所需的 Worker 和数据库资源。部署完成后打开访问地址并注册，第一个账号会自动成为管理员。
+第一次部署不要同时尝试多个平台。先把一条路径跑通，再考虑迁移或增加下载节点。
 
-## Docker
+## 2. 创建第一个管理员
 
-```sh
-curl -O https://raw.githubusercontent.com/saltbo/zpan/main/deploy/docker-compose.yml
-docker compose up -d
-```
+打开部署地址并注册。全新数据库中的第一个用户会自动成为管理员。进入文件页后，打开用户菜单，确认可以看到“管理控制台”。
 
-打开 `http://localhost:8222` 并注册第一个账号。
-
-## 连接存储
-
-登录管理员账号后：
-
-1. 打开 **管理后台 → 存储**。
-2. 填写 S3 Endpoint、Bucket、Region、Access Key 和 Secret Key。
-3. 测试连接并保存。
-4. 在文件页面上传一个小文件进行验证。
-
-:::caution[Endpoint 必须能被浏览器访问]
-文件从用户浏览器直接上传到 S3。`minio:9000` 这样的 Docker 内部地址无法被浏览器访问；本地测试请使用 `localhost`，生产环境请使用公开域名。
+:::caution
+不要把一个已经对公网开放、但还没有管理员的全新实例长期放置。完成部署后立即注册首个账号并关闭不需要的开放注册。
 :::
+
+## 3. 设置正式地址
+
+在 **管理控制台 → 设置 → 站点标识**中填写最终 HTTPS Public URL。让它与部署时的认证地址和浏览器访问域名保持一致；分享、图床、WebDAV 与 OAuth Callback 才不会各自指向不同域名。
+
+## 4. 添加对象存储
+
+准备一个 S3 兼容 Bucket 和专用 Access Key，在 **管理控制台 → 存储**中添加。按照[对象存储配置](/zh-cn/docs/configuration/storage/)为最终域名设置 CORS，然后运行连接测试。
+
+连接测试必须完成“创建 → 浏览器直传 → 清理”三个阶段。只保存表单但没有直传成功，不能算配置完成。
+
+## 5. 验证普通用户路径
+
+回到文件页：
+
+1. 新建一个文件夹。
+2. 上传一个小型文本或图片文件。
+3. 刷新页面，确认文件仍然存在并能预览或下载。
+4. 删除文件并从回收站恢复。
+5. 创建一个有密码、短有效期的访问页分享。
+6. 在无痕窗口打开链接并完成下载。
+
+## 6. 再配置站长能力
+
+基础链路通过后，再按需要配置邮件、OAuth、团队、WebDAV、图床和下载器。一次只启用一项，并保留一个普通测试账号验证站长看到的设置是否真的影响用户。
+
+完成以上步骤后，这个实例才算具备可用的最小闭环。

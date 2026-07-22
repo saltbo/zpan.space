@@ -1,29 +1,19 @@
 ---
 title: Image hosting
-description: Configure stable image URLs and connect screenshot and publishing tools.
+description: Configure durable image URLs and connect PicGo, PicList, uPic, ShareX, Flameshot, or custom clients.
 ---
 
-ZPan can receive images from compatible tools and return a stable URL on a domain you control.
+Image hosting uses the same S3 backend as ZPan while adding path templates, public delivery settings, gallery management, and tool-specific API keys.
 
-## Create an API key
+## Before connecting a client
 
-1. Sign in to ZPan.
-2. Open **Settings → API Keys**.
-3. Create a key for the tool you want to connect.
-4. Copy the value immediately and keep it secret.
+1. Confirm the administrator's storage connection test passes.
+2. Choose the storage backend and a stable path template.
+3. Configure a public or custom delivery domain when required.
+4. Create one API key per tool or device and copy it immediately; plaintext is shown once.
 
-## Configure image hosting
+Open the Tool Integration panel to generate configuration for PicGo/PicList, uPic, ShareX, or Flameshot. The pasted key is used in the browser to generate output and is not persisted by the panel.
 
-Open the Image Hosting settings and choose a storage backend, path prefix, and optional custom domain. You can also configure MIME restrictions, upload size, and referer rules.
+Upload one disposable image and verify the returned URL, `Content-Type`, caching, gallery entry, and deletion. Path-template changes affect new uploads only, so settle the naming strategy before publishing many links.
 
-## Supported workflows
-
-ZPan is designed to work with:
-
-- PicGo and PicList
-- uPic
-- ShareX
-- Flameshot
-- Custom scripts using the upload API
-
-Create a separate API key for each tool so individual integrations can be revoked without affecting the others.
+Referer allowlists reduce casual hotlinking but are not authentication. Do not publish private images through a public image-hosting URL. Revoke individual keys when a device is lost or an integration is retired.
