@@ -11,10 +11,10 @@ ZPan 是一个开源、S3 原生的文件平台，为对象存储提供现代文
 
 ## 从这里开始
 
-1. 按照[快速开始](/zh-cn/docs/getting-started/quick-start/)在本地运行 ZPan。
-2. 在生产环境选择 [Cloudflare Workers](/zh-cn/docs/deployment/cloudflare/) 或 Docker。
-3. 在初始化过程中连接任意 S3 兼容存储。
-4. 根据工作流设置图床或安全分享。
+1. 先[选择部署方式](/zh-cn/docs/getting-started/choose-deployment/)。
+2. 按照 [Cloudflare Workers](/zh-cn/docs/deployment/cloudflare/) 或 [Docker](/zh-cn/docs/deployment/docker/) 文档完成部署。
+3. 进行[部署后的首次初始化](/zh-cn/docs/getting-started/first-run/)，连接 S3 兼容存储并验证上传。
+4. 根据工作流设置[图床](/zh-cn/docs/user-guide/image-hosting/)或[文件分享](/zh-cn/docs/user-guide/file-sharing/)。
 
 ## 选择部署方式
 

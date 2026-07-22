@@ -16,4 +16,4 @@ Path templates keep a long-lived library maintainable. Organize blog assets by a
 
 Custom domains separate public identity from the storage provider and make future backend changes easier. Operators still need to validate DNS, HTTPS, caching, content type, and migration of old links. Referer and MIME rules reduce casual misuse but do not make a public image private.
 
-Start only after the underlying storage and CORS test passes. Enable image hosting, choose storage and a path template, create a dedicated key, and upload one test image from the intended client. Verify the returned URL, content type, cache behavior, and revocation before moving a daily workflow. See the [image hosting guide](/docs/guides/image-hosting/).
+Start only after the underlying storage and CORS test passes. Enable image hosting, choose storage and a path template, create a dedicated key, and upload one test image from the intended client. Verify the returned URL, content type, cache behavior, and revocation before moving a daily workflow. See the [image hosting guide](/docs/user-guide/image-hosting/).

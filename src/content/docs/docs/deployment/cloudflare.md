@@ -42,7 +42,7 @@ Public URL drives share links, image-hosting URLs, and WebDAV discovery. OAuth c
 
 ## Add file storage
 
-The deployment workflow provisions infrastructure for ZPan itself; it does not choose where user files belong. Add R2, S3, B2, Tigris, or another S3-compatible bucket under **Admin Console → Storages**, then configure browser CORS as described in [Object storage](/docs/configuration/storage/).
+The deployment workflow provisions infrastructure for ZPan itself; it does not choose where user files belong. Add R2, S3, B2, Tigris, or another S3-compatible bucket under **Admin Console → Storages**, then configure browser CORS as described in [Object storage](/docs/site-management/storage/object-storage/).
 
 The automatically created `zpan-public-images` bucket stores avatars only. It is not the default user-file bucket.
 

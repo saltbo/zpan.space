@@ -34,4 +34,4 @@ ZPan 2.1 到 2.3 连续补齐了这三层。它们分别引入完整认证与初
 
 站长配置登录与邀请，用户进入个人或团队空间管理文件，再通过受控链接交付给站外人员。通知把邀请、分享和结果连接起来。三个版本单独看是功能，组合后才成为协作系统。
 
-升级后的站点应先确认注册策略与邮件，再创建测试团队验证角色，最后从无痕窗口测试分享密码、过期与撤销。详细操作见[站点设置](/zh-cn/docs/configuration/site-settings/)、[用户与团队](/zh-cn/docs/admin/users-and-teams/)和[文件分享](/zh-cn/docs/guides/file-sharing/)。
+升级后的站点应先确认注册策略与邮件，再创建测试团队验证角色，最后从无痕窗口测试分享密码、过期与撤销。详细操作见[站点设置](/zh-cn/docs/site-management/general/site-settings/)、[用户与团队](/zh-cn/docs/site-management/users-and-teams/)和[文件分享](/zh-cn/docs/user-guide/file-sharing/)。

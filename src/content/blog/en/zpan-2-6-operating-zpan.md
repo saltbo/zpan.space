@@ -32,4 +32,4 @@ Personal and team spaces can receive different entitlements. Operators can expla
 
 ZPan Cloud sells and binds Pro or Business licenses and refreshes signed entitlement certificates. It does not receive the files in a self-hosted bucket. The application, database, and S3 credentials remain in the operator's chosen infrastructure.
 
-After upgrading, verify the current edition on About, then review Public URL, registration, default quotas, and email before opening the site to users. Follow the [administrator guide](/docs/admin/overview/) and [site settings guide](/docs/configuration/site-settings/) for the recommended order.
+After upgrading, verify the current edition on About, then review Public URL, registration, default quotas, and email before opening the site to users. Follow the [administrator guide](/docs/site-management/overview/) and [site settings guide](/docs/site-management/general/site-settings/) for the recommended order.

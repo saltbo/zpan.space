@@ -1,11 +1,11 @@
 ---
-title: 快速开始
-description: 用最短路径部署 ZPan，并完成一次真实的登录、存储、上传和分享验证。
+title: 部署后的首次初始化
+description: 初始化一个全新的 ZPan 实例，并完成一次真实的登录、存储、上传和分享验证。
 sidebar:
   order: 2
 ---
 
-这份快速开始的完成标准不是“看到 ZPan 首页”，而是从浏览器上传一个文件到自己的 S3 Bucket，再创建一个可以从无痕窗口打开的分享链接。
+首次初始化的完成标准不是“看到 ZPan 首页”，而是从浏览器上传一个文件到自己的 S3 Bucket，再创建一个可以从无痕窗口打开的分享链接。
 
 ## 1. 选择一条部署路径
 
@@ -28,7 +28,7 @@ sidebar:
 
 ## 4. 添加对象存储
 
-准备一个 S3 兼容 Bucket 和专用 Access Key，在 **管理控制台 → 存储**中添加。按照[对象存储配置](/zh-cn/docs/configuration/storage/)为最终域名设置 CORS，然后运行连接测试。
+准备一个 S3 兼容 Bucket 和专用 Access Key，在 **管理控制台 → 存储**中添加。按照[对象存储配置](/zh-cn/docs/site-management/storage/object-storage/)为最终域名设置 CORS，然后运行连接测试。
 
 连接测试必须完成“创建 → 浏览器直传 → 清理”三个阶段。只保存表单但没有直传成功，不能算配置完成。
 

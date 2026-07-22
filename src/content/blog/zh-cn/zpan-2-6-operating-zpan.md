@@ -44,4 +44,4 @@ Pro 或 Business 通过 ZPan Cloud 购买和绑定。Cloud 负责签发与刷新
 
 升级到 2.6 后，站长应先打开“关于”页面确认当前版本与 Edition，再决定是否绑定许可证。然后依次检查 Public URL、注册策略、默认配额和邮件配置。不要在验证码和邮件尚未验证时直接开放注册。
 
-完整的站长配置顺序可以参考[管理后台概览](/zh-cn/docs/admin/overview/)与[站点设置](/zh-cn/docs/configuration/site-settings/)。
+完整的站长配置顺序可以参考[管理后台概览](/zh-cn/docs/site-management/overview/)与[站点设置](/zh-cn/docs/site-management/general/site-settings/)。

@@ -40,4 +40,4 @@ The last point is easy to miss. ZPan uploads directly from the browser to object
 
 - [Deploy on Cloudflare Workers](/docs/deployment/cloudflare/)
 - [Deploy with Docker](/docs/deployment/docker/)
-- [Configure object storage](/docs/configuration/storage/)
+- [Configure object storage](/docs/site-management/storage/object-storage/)

@@ -36,4 +36,4 @@ PicGo、PicList、uPic、ShareX、Flameshot 和自定义脚本都可以连接 ZP
 
 站长先完成对象存储与 CORS 测试，再由用户启用图床、选择存储与路径规则、创建 API Key，最后在工具中上传一张测试图。检查返回 URL、Content-Type、缓存和删除行为都符合预期后，再迁移日常截图工作流。
 
-具体客户端配置见[图床指南](/zh-cn/docs/guides/image-hosting/)。
+具体客户端配置见[图床指南](/zh-cn/docs/user-guide/image-hosting/)。

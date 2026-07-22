@@ -5,11 +5,11 @@ const { locale = 'en' } = Astro.props;
 const zh = locale === 'zh-cn';
 const prefix = zh ? '/zh-cn' : '';
 const tiers = zh ? [
-	{ name: 'Community', label: '开源版', summary: '免费、自托管，适合个人、家庭和小团队。', features: ['文件管理、预览与搜索', '图床与自定义域名', '安全分享与 WebDAV', '个人空间与团队空间', '七种部署目标'], action: '开始部署', href: `${prefix}/docs/getting-started/quick-start/` },
+	{ name: 'Community', label: '开源版', summary: '免费、自托管，适合个人、家庭和小团队。', features: ['文件管理、预览与搜索', '图床与自定义域名', '安全分享与 WebDAV', '个人空间与团队空间', '七种部署目标'], action: '开始部署', href: `${prefix}/docs/getting-started/choose-deployment/` },
 	{ name: 'Pro', label: '专业版', summary: '面向公开服务和专业运营者的控制能力。', features: ['Community 的全部功能', '开放注册与反滥用', '品牌与白标能力', '审计日志与更高限额', '云端许可证管理'], action: '购买 Pro', href: 'https://cloud.zpan.space', featured: true },
 	{ name: 'Business', label: '商业版', summary: '面向需要配额、商业化和更复杂运营的团队。', features: ['Pro 的全部功能', '配额商品与充值卡', '积分与余额体系', '站内公告', '商业运营能力'], action: '获取商业版', href: 'https://cloud.zpan.space' },
 ] : [
-	{ name: 'Community', label: 'OPEN SOURCE', summary: 'Free and self-hosted for individuals, families, and small teams.', features: ['File manager, previews, and search', 'Image hosting and custom domains', 'Secure sharing and WebDAV', 'Personal and team spaces', 'All seven deployment targets'], action: 'Start deploying', href: `${prefix}/docs/getting-started/quick-start/` },
+	{ name: 'Community', label: 'OPEN SOURCE', summary: 'Free and self-hosted for individuals, families, and small teams.', features: ['File manager, previews, and search', 'Image hosting and custom domains', 'Secure sharing and WebDAV', 'Personal and team spaces', 'All seven deployment targets'], action: 'Start deploying', href: `${prefix}/docs/getting-started/choose-deployment/` },
 	{ name: 'Pro', label: 'FOR OPERATORS', summary: 'Controls for public services and professional operators.', features: ['Everything in Community', 'Open registration and anti-abuse', 'Branding and white label', 'Audit logs and higher limits', 'Cloud license management'], action: 'Get Pro', href: 'https://cloud.zpan.space', featured: true },
 	{ name: 'Business', label: 'FOR COMMERCE', summary: 'For teams that need quotas, commerce, and deeper operations.', features: ['Everything in Pro', 'Quota products and gift cards', 'Credits and balance system', 'In-app announcements', 'Commercial operations'], action: 'Get Business', href: 'https://cloud.zpan.space' },
 ];

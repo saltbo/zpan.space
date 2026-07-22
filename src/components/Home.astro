@@ -71,7 +71,7 @@ const workflows = zh ? [
 			<p class="hero-intro">{copy.intro}</p>
 			<div class="hero-actions">
 				<a class="button primary" href="https://drive.zpan.space">{copy.open}<span>↗</span></a>
-				<a class="button secondary" href={`${prefix}/docs/getting-started/quick-start/`}>{copy.deploy}<span>→</span></a>
+				<a class="button secondary" href={`${prefix}/docs/getting-started/choose-deployment/`}>{copy.deploy}<span>→</span></a>
 			</div>
 			<p class="hero-note">AGPL-3.0 · Cloudflare Workers · Docker · Any S3-compatible storage</p>
 		</div>
@@ -131,7 +131,7 @@ const workflows = zh ? [
 
 	<section class="pricing-preview section-shell">
 		<div class="pricing-intro"><p class="eyebrow"><span></span>{zh ? '版本' : 'Editions'}</p><h2>{copy.pricingTitle}</h2><p>{copy.pricingText}</p><a class="text-link" href={`${prefix}/pricing/`}>{zh ? '比较全部版本' : 'Compare all editions'} →</a></div>
-		<div class="edition-list"><article><small>COMMUNITY</small><strong>{zh ? '免费且开源' : 'Free & open source'}</strong><p>{zh ? '适合个人、家庭和小团队自行部署。' : 'For individuals, families, and small teams that self-host.'}</p><a href={`${prefix}/docs/getting-started/quick-start/`}>{zh ? '开始部署' : 'Start deploying'} →</a></article><article><small>PRO / BUSINESS</small><strong>{zh ? '面向专业运营' : 'Built for operators'}</strong><p>{zh ? '品牌、审计、配额、公告和商业能力。' : 'Branding, audit, quotas, announcements, and commerce.'}</p><a href="https://cloud.zpan.space">{zh ? '前往 ZPan Cloud' : 'Get it on ZPan Cloud'} ↗</a></article></div>
+		<div class="edition-list"><article><small>COMMUNITY</small><strong>{zh ? '免费且开源' : 'Free & open source'}</strong><p>{zh ? '适合个人、家庭和小团队自行部署。' : 'For individuals, families, and small teams that self-host.'}</p><a href={`${prefix}/docs/getting-started/choose-deployment/`}>{zh ? '开始部署' : 'Start deploying'} →</a></article><article><small>PRO / BUSINESS</small><strong>{zh ? '面向专业运营' : 'Built for operators'}</strong><p>{zh ? '品牌、审计、配额、公告和商业能力。' : 'Branding, audit, quotas, announcements, and commerce.'}</p><a href="https://cloud.zpan.space">{zh ? '前往 ZPan Cloud' : 'Get it on ZPan Cloud'} ↗</a></article></div>
 	</section>
 
 	<section class="latest section-shell">
@@ -139,5 +139,5 @@ const workflows = zh ? [
 		<div class="latest-grid">{posts.map((post) => <article><div class="post-meta"><span>{post.data.tags[0]}</span><span>{post.data.publishedAt.getFullYear()}</span></div><h3><a href={`${prefix}/blog/${slugFor(post.id)}/`}>{post.data.title}</a></h3><p>{post.data.description}</p><a class="read-more" href={`${prefix}/blog/${slugFor(post.id)}/`}>{zh ? '阅读全文' : 'Read article'} →</a></article>)}</div>
 	</section>
 
-	<section class="final-cta section-shell"><p class="eyebrow"><span></span>{zh ? '开始使用' : 'Get started'}</p><h2>{copy.finalTitle}</h2><p>{copy.finalText}</p><div class="hero-actions"><a class="button primary" href="https://drive.zpan.space">{copy.open}<span>↗</span></a><a class="button secondary" href={`${prefix}/docs/getting-started/quick-start/`}>{copy.deploy}<span>→</span></a></div></section>
+	<section class="final-cta section-shell"><p class="eyebrow"><span></span>{zh ? '开始使用' : 'Get started'}</p><h2>{copy.finalTitle}</h2><p>{copy.finalText}</p><div class="hero-actions"><a class="button primary" href="https://drive.zpan.space">{copy.open}<span>↗</span></a><a class="button secondary" href={`${prefix}/docs/getting-started/choose-deployment/`}>{copy.deploy}<span>→</span></a></div></section>
 </MarketingLayout>

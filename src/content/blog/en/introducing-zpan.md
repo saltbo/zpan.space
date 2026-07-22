@@ -31,4 +31,4 @@ That architecture makes Cloudflare Workers a practical primary runtime. Docker p
 
 Community keeps the core AGPL-3.0 self-hosted product. Pro adds operator controls such as branding, open registration, and audit; Business adds commercial quota and credit capabilities. The official [ZPan Drive](https://drive.zpan.space) is a managed delivery option, not a fourth edition.
 
-For a first installation, complete one path before enabling everything: deploy Workers or Docker, create the administrator, set Public URL, add a bucket, pass the browser upload test, and create a share. Continue with the [quick start](/docs/getting-started/quick-start/) or inspect the project on [GitHub](https://github.com/saltbo/zpan).
+For a first installation, complete one path before enabling everything: deploy Workers or Docker, create the administrator, set Public URL, add a bucket, pass the browser upload test, and create a share. Continue with the [first-run setup](/docs/getting-started/first-run/) or inspect the project on [GitHub](https://github.com/saltbo/zpan).
