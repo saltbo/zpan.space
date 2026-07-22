@@ -9,7 +9,7 @@ const prefix = zh ? '/zh-cn' : '';
 const posts = (await getCollection('blog', ({ data }) => data.locale === locale && !data.draft))
 	.sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
 const slugFor = (id: string) => id.replace(`${locale}/`, '').replace(/\.(md|mdx)$/, '');
-const date = new Intl.DateTimeFormat(zh ? 'zh-CN' : 'en', { year: 'numeric', month: 'long', day: 'numeric' });
+const date = new Intl.DateTimeFormat(zh ? 'zh-CN' : 'en', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
 ---
 <MarketingLayout title={zh ? 'Blog — ZPan' : 'ZPan Blog'} description={zh ? 'ZPan 的产品动态、教程和工程文章。' : 'Product news, tutorials, and engineering notes from ZPan.'} locale={locale}>
 	<section class="blog-hero section-shell">

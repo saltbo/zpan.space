@@ -16,7 +16,7 @@ const alternate = locale === 'zh-cn' ? Astro.url.pathname.replace(/^\/zh-cn/, ''
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="description" content={description} />
-		<meta name="theme-color" content="#07101f" />
+		<meta name="theme-color" content="#f7faf9" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="alternate" hreflang={locale === 'zh-cn' ? 'en' : 'zh-CN'} href={alternate} />
 		<meta property="og:type" content="website" />
@@ -33,11 +33,12 @@ const alternate = locale === 'zh-cn' ? Astro.url.pathname.replace(/^\/zh-cn/, ''
 				<span>ZPan</span>
 			</a>
 			<nav aria-label="Main navigation">
-				<a href={`${prefix}/#product`}>{locale === 'zh-cn' ? '产品' : 'Product'}</a>
+				<a href={`${prefix}/pricing/`}>{locale === 'zh-cn' ? '定价' : 'Pricing'}</a>
 				<a href={`${prefix}/blog/`}>Blog</a>
 				<a href={`${prefix}/docs/`}>{locale === 'zh-cn' ? '文档' : 'Docs'}</a>
 				<a class="github-link" href="https://github.com/saltbo/zpan">GitHub <span aria-hidden="true">↗</span></a>
 				<a class="language-link" href={alternate}>{locale === 'zh-cn' ? 'EN' : '中文'}</a>
+				<a class="header-cta" href="https://drive.zpan.space">{locale === 'zh-cn' ? '打开云盘' : 'Open Drive'} <span aria-hidden="true">↗</span></a>
 			</nav>
 		</header>
 		<main>
@@ -49,8 +50,11 @@ const alternate = locale === 'zh-cn' ? Astro.url.pathname.replace(/^\/zh-cn/, ''
 				<p>{locale === 'zh-cn' ? '开源、S3 原生的文件托管平台。' : 'The open-source, S3-native file hosting platform.'}</p>
 			</div>
 			<div class="footer-links">
+				<a href={`${prefix}/pricing/`}>{locale === 'zh-cn' ? '定价' : 'Pricing'}</a>
 				<a href={`${prefix}/docs/`}>{locale === 'zh-cn' ? '文档' : 'Documentation'}</a>
 				<a href={`${prefix}/blog/`}>Blog</a>
+				<a href="https://drive.zpan.space">Drive</a>
+				<a href="https://cloud.zpan.space">Cloud</a>
 				<a href="https://github.com/saltbo/zpan">GitHub</a>
 				<a href="https://opencollective.com/zpan">Open Collective</a>
 			</div>

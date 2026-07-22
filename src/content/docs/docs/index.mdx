@@ -1,40 +1,27 @@
 ---
-title: ZPan Documentation
+title: Documentation
 description: Deploy ZPan, connect your S3 storage, and build your file workflow.
-template: splash
-hero:
-  tagline: Everything you need to run your own S3-native file platform.
-  actions:
-    - text: Quick start
-      link: /docs/getting-started/quick-start/
-      icon: right-arrow
-    - text: View on GitHub
-      link: https://github.com/saltbo/zpan
-      icon: external
-      variant: minimal
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+# ZPan documentation
 
-## Choose your path
+ZPan is an open-source, S3-native file platform. It gives your object storage a modern file manager, image hosting, secure sharing, WebDAV, remote downloads, teams, and background tasks.
 
-<CardGrid stagger>
-	<Card title="Deploy on Cloudflare" icon="cloud">
-		Run ZPan on Workers and D1 without maintaining a server.
-	</Card>
-	<Card title="Deploy with Docker" icon="seti:docker">
-		Use the published image, embedded SQLite, and any S3-compatible storage.
-	</Card>
-	<Card title="Set up image hosting" icon="image">
-		Connect PicGo, PicList, uPic, ShareX, Flameshot, or your own API client.
-	</Card>
-	<Card title="Share files" icon="link">
-		Create landing pages or direct links with passwords, expiration, and limits.
-	</Card>
-</CardGrid>
+Files upload directly from clients to S3-compatible storage through presigned URLs. ZPan handles identity, metadata, permissions, and signing without relaying file traffic through the application server.
 
-## What ZPan is
+## Start here
 
-ZPan is a focused web drive for S3-compatible object storage. The server handles authentication, metadata, permissions, teams, shares, and signing. Files upload directly from the browser to object storage through presigned URLs.
+1. Follow the [quick start](/docs/getting-started/quick-start/) to run ZPan locally.
+2. Choose [Cloudflare Workers](/docs/deployment/cloudflare/) or [Docker](/docs/deployment/docker/) for production.
+3. Connect an S3-compatible storage provider during onboarding.
+4. Configure [file sharing](/docs/guides/file-sharing/) or [image hosting](/docs/guides/image-hosting/) for your workflow.
 
-It is designed for self-hosters, developers, bloggers, small teams, and automated workflows that want control over their storage without operating a traditional file-transfer server.
+## Choose a deployment
+
+Cloudflare Workers with D1 is the primary deployment target and requires no server maintenance. Docker uses the Node.js runtime and SQLite when you want to run ZPan on your own host or network.
+
+ZPan also supports AWS, Vercel, Netlify, Azure, and Google Cloud. The application remains the same; only the platform adapter and database configuration change.
+
+## Need a hosted version?
+
+Open the [official ZPan Drive](https://drive.zpan.space) to use ZPan without deploying infrastructure. Pro and Business licenses are available through [ZPan Cloud](https://cloud.zpan.space).

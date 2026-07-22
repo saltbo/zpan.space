@@ -6,7 +6,7 @@ interface Props { post: CollectionEntry<'blog'> }
 const { post } = Astro.props;
 const zh = post.data.locale === 'zh-cn';
 const prefix = zh ? '/zh-cn' : '';
-const date = new Intl.DateTimeFormat(zh ? 'zh-CN' : 'en', { year: 'numeric', month: 'long', day: 'numeric' });
+const date = new Intl.DateTimeFormat(zh ? 'zh-CN' : 'en', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
 ---
 <MarketingLayout title={`${post.data.title} — ZPan`} description={post.data.description} locale={post.data.locale}>
 	<article class="article-shell section-shell">
