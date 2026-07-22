@@ -1,0 +1,120 @@
+---
+import MarketingLayout from '../layouts/MarketingLayout.astro';
+
+interface Props { locale?: 'en' | 'zh-cn' }
+const { locale = 'en' } = Astro.props;
+const zh = locale === 'zh-cn';
+const prefix = zh ? '/zh-cn' : '';
+
+const copy = zh ? {
+	title: 'ZPan — 开源、S3 原生的文件托管平台',
+	description: '部署在自己的 Cloudflare 或服务器上，用自己的 S3 存储文件、托管图片并安全分享。',
+	eyebrow: '开源 · S3 原生 · 自托管',
+	headlineA: '你的文件。', headlineB: '你的存储。', headlineC: '你的规则。',
+	intro: '轻量、现代的文件托管平台。文件从浏览器直传 S3，不经过服务器带宽；你只需一次部署，就能拥有图床、文件分享与自动化能力。',
+	deploy: '开始部署', docs: '阅读文档', trusted: '适配你已经在使用的基础设施',
+	sectionEyebrow: '一个平台，三种工作流', sectionTitle: '从上传一张图片，到管理整个文件工作流。',
+	sectionIntro: 'ZPan 不试图成为笨重的云盘。它专注于把 S3 变成一个好用、可分享、可自动化的文件平台。',
+	archEyebrow: '直接上传架构', archTitle: '文件不绕路，服务器不背流量。', archText: 'ZPan 只负责权限与签名。客户端拿到预签名 URL 后直接与 S3 通信，更快，也更容易控制成本。',
+	openEyebrow: '真正属于你', openTitle: '从代码到数据，始终掌握在自己手里。',
+	ctaTitle: '十分钟，部署你自己的 ZPan。', ctaText: '选择 Cloudflare 或 Docker，连接任意 S3 兼容存储，然后开始上传。'
+} : {
+	title: 'ZPan — Open-source, S3-native file hosting',
+	description: 'Host files, serve images, and share securely on your own Cloudflare account or server, backed by the S3 storage you choose.',
+	eyebrow: 'Open source · S3 native · Self-hosted',
+	headlineA: 'Your files.', headlineB: 'Your storage.', headlineC: 'Your rules.',
+	intro: 'A lightweight, modern file hosting platform. Files travel directly from the browser to S3—never through your server bandwidth. One deployment gives you image hosting, file sharing, and automation-ready foundations.',
+	deploy: 'Deploy ZPan', docs: 'Read the docs', trusted: 'Built for the infrastructure you already use',
+	sectionEyebrow: 'One platform, three workflows', sectionTitle: 'From one screenshot to your entire file workflow.',
+	sectionIntro: 'ZPan is not trying to become a heavy cloud drive. It turns S3 into a file platform that is easy to use, easy to share, and ready to automate.',
+	archEyebrow: 'Direct upload architecture', archTitle: 'Your files take the direct route.', archText: 'ZPan handles authorization and signing. The client then talks directly to S3 with a presigned URL—faster transfers, no server bandwidth bottleneck, and predictable costs.',
+	openEyebrow: 'Yours by design', openTitle: 'From the code to the data, you stay in control.',
+	ctaTitle: 'Your own ZPan, in about ten minutes.', ctaText: 'Choose Cloudflare or Docker, connect any S3-compatible storage, and start uploading.'
+};
+
+const features = zh ? [
+	{ number: '01', title: '图床', text: '对接 PicGo、uPic、ShareX 或 API，在自己的域名下获得永久图片链接。', color: 'blue' },
+	{ number: '02', title: '文件分享', text: '生成带密码、有效期和下载限制的分享链接，把文件安全地交给任何人。', color: 'green' },
+	{ number: '03', title: '自动化', text: '通过 API、WebDAV 与未来的 Agent CLI，把文件能力接入脚本、CI 和工作流。', color: 'yellow' },
+] : [
+	{ number: '01', title: 'Image hosting', text: 'Connect PicGo, uPic, ShareX, or the API. Get permanent image URLs on a domain you control.', color: 'blue' },
+	{ number: '02', title: 'File sharing', text: 'Create polished share links with passwords, expiration dates, and download limits built in.', color: 'green' },
+	{ number: '03', title: 'Automation', text: 'Bring files into scripts, CI, and workflows through the API, WebDAV, and an agent-friendly CLI.', color: 'yellow' },
+];
+---
+
+<MarketingLayout title={copy.title} description={copy.description} locale={locale}>
+	<section class="hero section-shell">
+		<div class="hero-glow"></div>
+		<div class="hero-copy">
+			<p class="eyebrow"><span></span>{copy.eyebrow}</p>
+			<h1>{copy.headlineA}<br /><span>{copy.headlineB}</span><br />{copy.headlineC}</h1>
+			<p class="hero-intro">{copy.intro}</p>
+			<div class="hero-actions">
+				<a class="button primary" href={`${prefix}/docs/getting-started/quick-start/`}>{copy.deploy}<span>→</span></a>
+				<a class="button secondary" href={`${prefix}/docs/`}>{copy.docs}</a>
+			</div>
+		</div>
+		<div class="product-window" aria-label={zh ? 'ZPan 文件管理界面示意' : 'ZPan file manager preview'}>
+			<div class="window-bar"><span></span><span></span><span></span><b>app.zpan.space</b></div>
+			<div class="app-shell">
+				<div class="app-sidebar">
+					<div class="mini-brand"><img src="/logo.svg" alt="" />ZPan</div>
+					<div class="side-item active">▣ <span>{zh ? '文件' : 'Files'}</span></div>
+					<div class="side-item">↗ <span>{zh ? '分享' : 'Shares'}</span></div>
+					<div class="side-item">◇ <span>{zh ? '图床' : 'Images'}</span></div>
+					<div class="storage-meter"><small>{zh ? '存储空间' : 'Storage'}</small><i><b></b></i><span>3.2 GB / 10 GB</span></div>
+				</div>
+				<div class="file-panel">
+					<div class="panel-head"><div><strong>{zh ? '我的文件' : 'My files'}</strong><small>{zh ? '所有文件' : 'All files'}</small></div><button>＋ {zh ? '上传' : 'Upload'}</button></div>
+					<div class="crumb">⌂ &nbsp;/&nbsp; product-assets</div>
+					<div class="file-row"><i class="folder">◆</i><b>screenshots</b><span>—</span><em>{zh ? '刚刚' : 'Just now'}</em></div>
+					<div class="file-row"><i class="image">▧</i><b>hero-cover.png</b><span>1.8 MB</span><em>{zh ? '2 分钟前' : '2 min ago'}</em></div>
+					<div class="file-row"><i class="doc">≡</i><b>release-notes.pdf</b><span>840 KB</span><em>{zh ? '昨天' : 'Yesterday'}</em></div>
+					<div class="upload-toast"><span>✓</span><div><b>{zh ? '上传完成' : 'Upload complete'}</b><small>hero-cover.png</small></div></div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="platform-strip section-shell" aria-label="Supported platforms">
+		<p>{copy.trusted}</p>
+		<div><span>Cloudflare</span><span>Docker</span><span>Amazon S3</span><span>Cloudflare R2</span><span>Backblaze B2</span><span>Tigris</span></div>
+	</section>
+
+	<section class="features section-shell" id="product">
+		<div class="section-heading">
+			<div><p class="eyebrow"><span></span>{copy.sectionEyebrow}</p><h2>{copy.sectionTitle}</h2></div>
+			<p>{copy.sectionIntro}</p>
+		</div>
+		<div class="feature-grid">
+			{features.map((feature) => <article class={`feature-card ${feature.color}`}><small>{feature.number}</small><div class="feature-icon">{feature.number === '01' ? '◫' : feature.number === '02' ? '↗' : '⌘'}</div><h3>{feature.title}</h3><p>{feature.text}</p><a href={`${prefix}/docs/`}>{zh ? '了解更多' : 'Learn more'} <span>→</span></a></article>)}
+		</div>
+	</section>
+
+	<section class="architecture section-shell">
+		<div class="architecture-copy"><p class="eyebrow"><span></span>{copy.archEyebrow}</p><h2>{copy.archTitle}</h2><p>{copy.archText}</p><ul><li>{zh ? '浏览器直传 S3' : 'Browser-to-S3 uploads'}</li><li>{zh ? '任意 S3 兼容存储' : 'Any S3-compatible storage'}</li><li>{zh ? '不锁定云厂商' : 'No cloud vendor lock-in'}</li></ul></div>
+		<div class="flow-diagram">
+			<div class="flow-node client"><span>01</span><b>{zh ? '客户端' : 'Client'}</b><small>{zh ? '选择文件' : 'Select a file'}</small></div>
+			<div class="flow-line"><i></i><small>{zh ? '请求签名' : 'Request signature'}</small></div>
+			<div class="flow-node zpan"><img src="/logo.svg" alt="" /><b>ZPan</b><small>{zh ? '鉴权与签名' : 'Authorize & sign'}</small></div>
+			<div class="flow-line direct"><i></i><small>{zh ? '直接上传' : 'Direct upload'}</small></div>
+			<div class="flow-node storage"><span>03</span><b>S3</b><small>{zh ? '你的存储' : 'Your storage'}</small></div>
+		</div>
+	</section>
+
+	<section class="open-source section-shell">
+		<div class="open-copy"><p class="eyebrow"><span></span>{copy.openEyebrow}</p><h2>{copy.openTitle}</h2></div>
+		<div class="open-points">
+			<article><span>01</span><h3>{zh ? '开源透明' : 'Open source'}</h3><p>{zh ? '以 AGPL-3.0 发布，代码公开、可以审计，也可以参与贡献。' : 'Licensed under AGPL-3.0. Inspect the code, run it yourself, and contribute back.'}</p></article>
+			<article><span>02</span><h3>{zh ? '随处部署' : 'Deploy anywhere'}</h3><p>{zh ? '首选 Cloudflare Workers，也可以通过 Docker 部署到自己的服务器。' : 'Use Cloudflare Workers for zero-ops hosting, or run Docker on your own server.'}</p></article>
+			<article><span>03</span><h3>{zh ? '数据自主' : 'Data ownership'}</h3><p>{zh ? '存储由你选择，域名由你控制，迁移时不会被平台绑住。' : 'Choose the storage, own the domain, and move whenever you want.'}</p></article>
+		</div>
+	</section>
+
+	<section class="final-cta section-shell">
+		<div class="cta-clouds"><i></i><i></i><i></i></div>
+		<p class="eyebrow"><span></span>{zh ? '现在开始' : 'Get started'}</p><h2>{copy.ctaTitle}</h2><p>{copy.ctaText}</p>
+		<div class="hero-actions"><a class="button primary" href={`${prefix}/docs/getting-started/quick-start/`}>{copy.deploy}<span>→</span></a><a class="button secondary" href="https://github.com/saltbo/zpan">GitHub ↗</a></div>
+	</section>
+</MarketingLayout>

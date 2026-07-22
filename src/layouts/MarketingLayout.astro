@@ -1,0 +1,64 @@
+---
+interface Props {
+	title: string;
+	description: string;
+	locale?: 'en' | 'zh-cn';
+}
+
+const { title, description, locale = 'en' } = Astro.props;
+const prefix = locale === 'zh-cn' ? '/zh-cn' : '';
+const alternate = locale === 'zh-cn' ? Astro.url.pathname.replace(/^\/zh-cn/, '') || '/' : `/zh-cn${Astro.url.pathname}`;
+---
+
+<!doctype html>
+<html lang={locale === 'zh-cn' ? 'zh-CN' : 'en'}>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="description" content={description} />
+		<meta name="theme-color" content="#07101f" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="alternate" hreflang={locale === 'zh-cn' ? 'en' : 'zh-CN'} href={alternate} />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:site_name" content="ZPan" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<title>{title}</title>
+	</head>
+	<body>
+		<header class="site-header">
+			<a class="brand" href={`${prefix}/`} aria-label="ZPan home">
+				<img src="/logo.svg" alt="" width="38" height="38" />
+				<span>ZPan</span>
+			</a>
+			<nav aria-label="Main navigation">
+				<a href={`${prefix}/#product`}>{locale === 'zh-cn' ? '产品' : 'Product'}</a>
+				<a href={`${prefix}/blog/`}>Blog</a>
+				<a href={`${prefix}/docs/`}>{locale === 'zh-cn' ? '文档' : 'Docs'}</a>
+				<a class="github-link" href="https://github.com/saltbo/zpan">GitHub <span aria-hidden="true">↗</span></a>
+				<a class="language-link" href={alternate}>{locale === 'zh-cn' ? 'EN' : '中文'}</a>
+			</nav>
+		</header>
+		<main>
+			<slot />
+		</main>
+		<footer class="site-footer">
+			<div>
+				<a class="brand footer-brand" href={`${prefix}/`}><img src="/logo.svg" alt="" width="34" height="34" /><span>ZPan</span></a>
+				<p>{locale === 'zh-cn' ? '开源、S3 原生的文件托管平台。' : 'The open-source, S3-native file hosting platform.'}</p>
+			</div>
+			<div class="footer-links">
+				<a href={`${prefix}/docs/`}>{locale === 'zh-cn' ? '文档' : 'Documentation'}</a>
+				<a href={`${prefix}/blog/`}>Blog</a>
+				<a href="https://github.com/saltbo/zpan">GitHub</a>
+				<a href="https://opencollective.com/zpan">Open Collective</a>
+			</div>
+			<p class="copyright">© {new Date().getFullYear()} ZPan · AGPL-3.0</p>
+		</footer>
+	</body>
+</html>
+
+<style is:global>
+	@import '../styles/global.css';
+</style>

@@ -1,0 +1,40 @@
+---
+title: ZPan Documentation
+description: Deploy ZPan, connect your S3 storage, and build your file workflow.
+template: splash
+hero:
+  tagline: Everything you need to run your own S3-native file platform.
+  actions:
+    - text: Quick start
+      link: /docs/getting-started/quick-start/
+      icon: right-arrow
+    - text: View on GitHub
+      link: https://github.com/saltbo/zpan
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Choose your path
+
+<CardGrid stagger>
+	<Card title="Deploy on Cloudflare" icon="cloud">
+		Run ZPan on Workers and D1 without maintaining a server.
+	</Card>
+	<Card title="Deploy with Docker" icon="seti:docker">
+		Use the published image, embedded SQLite, and any S3-compatible storage.
+	</Card>
+	<Card title="Set up image hosting" icon="image">
+		Connect PicGo, PicList, uPic, ShareX, Flameshot, or your own API client.
+	</Card>
+	<Card title="Share files" icon="link">
+		Create landing pages or direct links with passwords, expiration, and limits.
+	</Card>
+</CardGrid>
+
+## What ZPan is
+
+ZPan is a focused web drive for S3-compatible object storage. The server handles authentication, metadata, permissions, teams, shares, and signing. Files upload directly from the browser to object storage through presigned URLs.
+
+It is designed for self-hosters, developers, bloggers, small teams, and automated workflows that want control over their storage without operating a traditional file-transfer server.

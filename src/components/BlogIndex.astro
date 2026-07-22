@@ -1,0 +1,26 @@
+---
+import { getCollection } from 'astro:content';
+import MarketingLayout from '../layouts/MarketingLayout.astro';
+
+interface Props { locale?: 'en' | 'zh-cn' }
+const { locale = 'en' } = Astro.props;
+const zh = locale === 'zh-cn';
+const prefix = zh ? '/zh-cn' : '';
+const posts = (await getCollection('blog', ({ data }) => data.locale === locale && !data.draft))
+	.sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+const slugFor = (id: string) => id.replace(`${locale}/`, '').replace(/\.(md|mdx)$/, '');
+const date = new Intl.DateTimeFormat(zh ? 'zh-CN' : 'en', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+<MarketingLayout title={zh ? 'Blog — ZPan' : 'ZPan Blog'} description={zh ? 'ZPan 的产品动态、教程和工程文章。' : 'Product news, tutorials, and engineering notes from ZPan.'} locale={locale}>
+	<section class="blog-hero section-shell">
+		<p class="eyebrow"><span></span>{zh ? '动态与思考' : 'Updates & ideas'}</p>
+		<h1>{zh ? '来自 ZPan 的最新消息。' : 'Notes from the ZPan team.'}</h1>
+		<p>{zh ? '产品发布、自托管教程，以及我们如何构建开源文件基础设施。' : 'Product releases, self-hosting guides, and what we learn building open-source file infrastructure.'}</p>
+	</section>
+	<section class="post-grid section-shell">
+		{posts.map((post, index) => <article class:list={['post-card', { featured: index === 0 }]}>
+			<div class="post-visual"><span>{post.data.tags[0] ?? 'ZPan'}</span><div class="visual-clouds"><i></i><i></i><i></i></div></div>
+			<div class="post-body"><div class="post-meta"><span>{date.format(post.data.publishedAt)}</span><span>{post.data.tags.join(' · ')}</span></div><h2><a href={`${prefix}/blog/${slugFor(post.id)}/`}>{post.data.title}</a></h2><p>{post.data.description}</p><a class="read-more" href={`${prefix}/blog/${slugFor(post.id)}/`}>{zh ? '阅读全文' : 'Read article'} →</a></div>
+		</article>)}
+	</section>
+</MarketingLayout>

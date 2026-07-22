@@ -1,0 +1,18 @@
+:root {
+	--sl-color-accent-low: #102d57;
+	--sl-color-accent: #4285f4;
+	--sl-color-accent-high: #c7dcff;
+	--sl-color-white: #edf4ff;
+	--sl-color-gray-1: #d7e1ef;
+	--sl-color-gray-2: #aab9cc;
+	--sl-color-gray-3: #70839c;
+	--sl-color-gray-4: #40536b;
+	--sl-color-gray-5: #1d2d42;
+	--sl-color-gray-6: #101d2e;
+	--sl-color-black: #07101f;
+	--sl-font: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+header.header { border-bottom-color: rgba(148, 173, 208, .17); }
+.site-title { letter-spacing: -.04em; }
+.hero h1 { letter-spacing: -.05em; }

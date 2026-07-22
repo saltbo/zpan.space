@@ -1,0 +1,18 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import MarketingLayout from './MarketingLayout.astro';
+
+interface Props { post: CollectionEntry<'blog'> }
+const { post } = Astro.props;
+const zh = post.data.locale === 'zh-cn';
+const prefix = zh ? '/zh-cn' : '';
+const date = new Intl.DateTimeFormat(zh ? 'zh-CN' : 'en', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+<MarketingLayout title={`${post.data.title} — ZPan`} description={post.data.description} locale={post.data.locale}>
+	<article class="article-shell section-shell">
+		<a class="article-back" href={`${prefix}/blog/`}>← {zh ? '返回 Blog' : 'Back to Blog'}</a>
+		<header><div class="post-meta"><span>{date.format(post.data.publishedAt)}</span><span>{post.data.tags.join(' · ')}</span></div><h1>{post.data.title}</h1><p>{post.data.description}</p></header>
+		<div class="article-divider"><span></span><span></span><span></span></div>
+		<div class="prose"><slot /></div>
+	</article>
+</MarketingLayout>
