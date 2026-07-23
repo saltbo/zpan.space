@@ -19,6 +19,18 @@
 
 header.header { border-bottom-color: rgba(110, 150, 139, .18); }
 .site-title { gap: .35rem; color: #13231f; letter-spacing: -.04em; }
-starlight-lang-select { flex: 0 0 auto; }
-starlight-lang-select select { width: 9.5rem; }
+.lang-switch-icon { display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto; height:2rem; padding-inline:.4rem; color:var(--sl-color-gray-2); }
+.lang-switch-icon:hover { color:var(--sl-color-accent); }
+.lang-switch-icon svg { width:20px; height:20px; fill:currentColor; shape-rendering:geometricPrecision; }
 .hero h1 { letter-spacing: -.05em; }
+
+/* Reorder the docs header tools so the language switch comes before the GitHub icon:
+   [Language] -> [Theme] -> [GitHub] */
+.right-group > .lang-switch-icon { order: 1; }
+.right-group > starlight-theme-select { order: 2; }
+.right-group > .social-icons { order: 3; }
+/* Move the divider so it sits to the left of the GitHub icon (between theme and GitHub). */
+.right-group > .social-icons::after {
+	border-inline-end: 0;
+	border-inline-start: 1px solid var(--sl-color-gray-5);
+}
