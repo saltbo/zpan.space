@@ -76,7 +76,7 @@ Cloud Run 容器文件系统和 Google Cloud Storage 都不会自动成为 ZPan 
 | 每 6 小时 | `/api/licensing/refresh-cron?secret=YOUR_SECRET` |
 | 每 10 分钟 | `/api/licensing/traffic-sync-runs?secret=YOUR_SECRET` |
 
-Google 提供[定时调用 Cloud Run](https://cloud.google.com/run/docs/triggering/using-scheduler)的官方方案。ZPan 主服务本身是公开的，因此这两个应用 Endpoint 仍要使用随机密钥保护，并保持 Scheduler 配置私有。
+Google 提供[定时调用 Cloud Run](https://cloud.google.com/run/docs/triggering/using-scheduler) 的官方方案。ZPan 主服务本身是公开的，因此这两个应用 Endpoint 仍要使用随机密钥保护，并保持 Scheduler 配置私有。
 
 ## 升级与排错
 

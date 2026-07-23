@@ -25,11 +25,11 @@ https://files.example.com/api/auth/callback/<provider-id>
 https://files.example.com/api/auth/oauth2/callback/<provider-id>
 ```
 
-始终复制管理后台展示的完整 Callback。Scheme、域名、端口、路径和 Provider ID 必须与上游应用逐字一致。
+始终复制管理控制台展示的完整 Callback。Scheme、域名、端口、路径和 Provider ID 必须与上游应用逐字一致。
 
 ## 内置 OAuth
 
-在身份服务商处创建 Confidential Web Application，添加后台展示的 Callback，再把 Client ID 和 Client Secret 保存到 **管理后台 → OAuth**。不同环境应使用独立的上游应用和 Secret。
+在身份服务商处创建 Confidential Web Application，添加后台展示的 Callback，再把 Client ID 和 Client Secret 保存到 **管理控制台 → OAuth**。不同环境应使用独立的上游应用和 Secret。
 
 使用全新测试账号验证首次登录、重复登录、退出，以及上游账号被禁用后的表现。不再使用的服务商应删除；Secret 出现在仓库、日志或聊天后立即轮换。
 
@@ -43,7 +43,7 @@ Discovery 失败通常表示 Issuer 错误或 ZPan 运行环境无法访问；To
 
 ## 邮件服务
 
-进入 **管理后台 → 设置 → 邮件**，配置服务商、SMTP Host 与端口、凭据、发件人名称和地址。使用专门为 ZPan 创建的凭据。
+进入 **管理控制台 → 设置 → 邮件**，配置服务商、SMTP Host 与端口、凭据、发件人名称和地址。使用专门为 ZPan 创建的凭据。
 
 SMTP 加密模式以服务商文档为准：465 通常使用隐式 TLS，587 通常使用 STARTTLS。发件地址必须得到服务商授权，域名应配置 SPF、DKIM，最好同时配置 DMARC。
 

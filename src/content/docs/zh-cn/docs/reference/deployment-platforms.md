@@ -19,7 +19,7 @@ ZPan 还提供 AWS Lambda、Vercel、Netlify、Azure Functions 与 Google Cloud 
 - 最终域名对应的 `BETTER_AUTH_URL`
 - 当前平台的部署凭证
 
-Bucket 凭证不需要放进 GitHub Actions；应用上线后在 ZPan 管理后台配置。
+Bucket 凭证不需要放进 GitHub Actions；应用上线后在 ZPan 管理控制台配置。
 
 ## 平台差异
 
