@@ -1,4 +1,20 @@
 ---
 title: "Community、Pro 与 Business"
-description: "了解 ZPan 的Community、Pro 与 Business。"
+description: 对比 ZPan Community、Pro 和 Business 自托管版本，以及许可证解锁的能力。
 ---
+
+ZPan Community 可以自行部署。Pro 和 Business 授权会在同一个实例上解锁商业能力；购买授权不会把文件迁移到某个 ZPan 托管服务。
+
+![管理后台中的授权版本对比](/images/docs/admin-licensing.png)
+
+## 选择版本
+
+**Community** 提供核心文件管理、分享、图床、邀请，以及有限数量的登录服务商、团队、存储和下载节点，适合个人和小型私有群体。
+
+**Pro** 面向更大的私有部署，解除常见资源数量限制，并增加自定义品牌、开放注册和审计日志等能力。
+
+**Business** 面向把存储作为服务运营的场景，包含 Pro 能力，并增加售卖存储与流量权益、站点公告等商业控制。
+
+功能会随版本演进，因此当前安装版本里的对比表是最终依据。最新授权价格和购买条款请查看 [Pricing](/zh-cn/pricing/)。
+
+在 **管理后台 → 授权** 中绑定许可证。迁移实例时保留实例标识和购买账号信息，并提前备份数据库；替换数据库也可能替换本地绑定状态。

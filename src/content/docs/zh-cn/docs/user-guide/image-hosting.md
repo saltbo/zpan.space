@@ -5,6 +5,8 @@ description: 配置稳定图片地址，并接入 PicGo、PicList、uPic、Share
 
 图床复用 ZPan 的 S3 存储，在其上增加路径模板、公开访问、图库管理和面向工具的 API Key。
 
+![ZPan 英文版图床设置页面](/images/docs/image-hosting.png)
+
 ## 接入工具前
 
 1. 确认站长的存储连接测试已经通过。

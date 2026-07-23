@@ -7,12 +7,11 @@ const { locale = 'en' } = Astro.props;
 const zh = locale === 'zh-cn';
 const prefix = zh ? '/zh-cn' : '';
 const { catalog, isMock } = await getLicenseQuoteCatalog();
-const currencies = [...new Set(catalog.offers.map((offer) => offer.currency))];
-const defaultCurrency = currencies.includes(zh ? 'CNY' : 'USD') ? (zh ? 'CNY' : 'USD') : currencies[0];
-const formatPrice = (amountMinor: number, currency: string) => {
-	const formatter = new Intl.NumberFormat(zh ? 'zh-CN' : 'en-US', { style: 'currency', currency, maximumFractionDigits: 0 });
-	const fractionDigits = new Intl.NumberFormat(zh ? 'zh-CN' : 'en-US', { style: 'currency', currency }).resolvedOptions().maximumFractionDigits ?? 2;
-	return formatter.format(amountMinor / 10 ** fractionDigits);
+const offers = catalog.offers.filter((offer) => offer.currency === 'USD');
+if (offers.length !== 4) throw new Error('The ZPan Cloud pricing catalog must provide monthly and yearly USD offers for Pro and Business.');
+const formatPrice = (amountMinor: number) => {
+	const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+	return formatter.format(amountMinor / 100);
 };
 
 const tiers: Array<{
@@ -69,11 +68,10 @@ const comparisonGroups = zh ? [
 		</ol>
 	</section>
 
-	<section class="pricing-options section-shell" aria-labelledby="pricing-options-title" data-pricing-root data-default-currency={defaultCurrency}>
+	<section class="pricing-options section-shell" aria-labelledby="pricing-options-title" data-pricing-root>
 		<div class="pricing-options-head">
 			<div><p class="eyebrow"><span></span>{zh ? '报价' : 'Quotes'}</p><h2 id="pricing-options-title">{zh ? '透明的许可证价格' : 'Transparent License Pricing'}</h2></div>
 			<div class="pricing-controls" aria-label={zh ? '报价显示选项' : 'Pricing display options'}>
-				<div class="segmented-control" role="group" aria-label={zh ? '币种' : 'Currency'}>{currencies.map((currency) => <button type="button" data-price-filter="currency" data-value={currency} aria-pressed={currency === defaultCurrency}>{currency}</button>)}</div>
 				<div class="segmented-control" role="group" aria-label={zh ? '计费周期' : 'Billing period'}>
 					<button type="button" data-price-filter="billing" data-value="month" aria-pressed="false">{zh ? '月付' : 'Monthly'}</button>
 					<button type="button" data-price-filter="billing" data-value="year" aria-pressed="true">{zh ? '年付' : 'Yearly'}</button>
@@ -83,21 +81,21 @@ const comparisonGroups = zh ? [
 		{isMock && <p class="mock-notice" role="status">{zh ? '示例价格 · ZPan Cloud 公开报价接口上线后将自动替换' : 'Example prices · Replaced automatically when the public ZPan Cloud pricing API launches'}</p>}
 
 		<div class="tier-grid">{tiers.map((tier) => {
-			const offers = tier.id === 'community' ? [] : catalog.offers.filter((offer) => offer.edition === tier.id);
+			const tierOffers = tier.id === 'community' ? [] : offers.filter((offer) => offer.edition === tier.id);
 			return <article class:list={['tier-card', { featured: tier.featured }]} data-tier={tier.id}>
 				<span class="tier-label">{tier.label}</span>
 				<h3>{tier.name}</h3>
 				<p class="tier-summary">{tier.summary}</p>
 				<div class="price-slot">
 					{tier.id === 'community'
-						? currencies.map((currency) => <div class="price-option" data-price-option data-currency={currency} data-billing="month" data-free-price hidden={currency !== defaultCurrency}><strong>{formatPrice(0, currency)}</strong><span>{zh ? '永久' : 'forever'}</span></div>)
-						: offers.map((offer) => <div class="price-option" data-price-option data-currency={offer.currency} data-billing={offer.billingPeriod} data-checkout={offer.checkoutUrl} hidden={offer.currency !== defaultCurrency || offer.billingPeriod !== 'year'}><strong>{formatPrice(offer.amountMinor, offer.currency)}</strong><span>/{offer.billingPeriod === 'year' ? (zh ? '年' : 'year') : (zh ? '月' : 'month')}</span></div>)}
+						? <div class="price-option" data-price-option data-billing="month" data-free-price><strong>{formatPrice(0)}</strong><span>{zh ? '永久' : 'forever'}</span></div>
+						: tierOffers.map((offer) => <div class="price-option" data-price-option data-billing={offer.billingPeriod} data-checkout={offer.checkoutUrl} hidden={offer.billingPeriod !== 'year'}><strong>{formatPrice(offer.amountMinor)}</strong><span>/{offer.billingPeriod === 'year' ? (zh ? '年' : 'year') : (zh ? '月' : 'month')}</span></div>)}
 				</div>
 				<ul>{tier.features.map((feature) => <li>{feature}</li>)}</ul>
-				<a class:list={['button', tier.featured ? 'primary' : 'secondary']} data-purchase-link={tier.id !== 'community' ? '' : undefined} href={tier.id === 'community' ? `${prefix}/docs/getting-started/quick-start/` : offers.find((offer) => offer.currency === defaultCurrency && offer.billingPeriod === 'year')?.checkoutUrl} target={tier.id === 'community' ? undefined : '_blank'} rel={tier.id === 'community' ? undefined : 'noopener noreferrer'}>{tier.action} <span aria-hidden="true">{tier.id === 'community' ? '→' : '↗'}</span></a>
+				<a class:list={['button', tier.featured ? 'primary' : 'secondary']} data-purchase-link={tier.id !== 'community' ? '' : undefined} href={tier.id === 'community' ? `${prefix}/docs/getting-started/quick-start/` : tierOffers.find((offer) => offer.billingPeriod === 'year')?.checkoutUrl} target={tier.id === 'community' ? undefined : '_blank'} rel={tier.id === 'community' ? undefined : 'noopener noreferrer'}>{tier.action} <span aria-hidden="true">{tier.id === 'community' ? '→' : '↗'}</span></a>
 			</article>;
 		})}</div>
-		<p class="pricing-footnote">{zh ? '金额为许可证报价，不包含税费、对象存储和基础设施成本。最终结算信息以 ZPan Cloud 为准。' : 'License prices exclude taxes, object storage, and infrastructure. ZPan Cloud shows the final billing terms.'}</p>
+		<p class="pricing-footnote">{zh ? '所有价格均以美元（USD）显示。金额为许可证报价，不包含税费、对象存储和基础设施成本；最终结算信息以 ZPan Cloud 为准。' : 'All prices are shown in USD. License prices exclude taxes, object storage, and infrastructure; ZPan Cloud shows the final billing terms.'}</p>
 	</section>
 
 	<section class="comparison section-shell" aria-labelledby="comparison-title">
@@ -128,22 +126,20 @@ const comparisonGroups = zh ? [
 <script>
 	const root = document.querySelector('[data-pricing-root]');
 	if (root instanceof HTMLElement) {
-		const supportedCurrencies = [...root.querySelectorAll('[data-price-filter="currency"]')].map((element) => element.getAttribute('data-value'));
 		const params = new URLSearchParams(window.location.search);
-		let currency = supportedCurrencies.includes(params.get('currency')) ? params.get('currency') : root.dataset.defaultCurrency;
 		let billing = params.get('billing') === 'month' ? 'month' : 'year';
 
 		const update = () => {
 			root.querySelectorAll('[data-price-filter]').forEach((element) => {
 				if (!(element instanceof HTMLButtonElement)) return;
-				const selected = element.dataset.value === (element.dataset.priceFilter === 'currency' ? currency : billing);
+				const selected = element.dataset.value === billing;
 				element.setAttribute('aria-pressed', String(selected));
 			});
 
 			root.querySelectorAll('[data-tier]').forEach((tier) => {
 				tier.querySelectorAll('[data-price-option]').forEach((element) => {
 					if (!(element instanceof HTMLElement)) return;
-					const selected = element.dataset.currency === currency && (element.hasAttribute('data-free-price') || element.dataset.billing === billing);
+					const selected = element.hasAttribute('data-free-price') || element.dataset.billing === billing;
 					element.hidden = !selected;
 				});
 				const selectedOption = [...tier.querySelectorAll('[data-price-option]')].find((element) => element instanceof HTMLElement && !element.hidden);
@@ -152,14 +148,13 @@ const comparisonGroups = zh ? [
 			});
 
 			const nextParams = new URLSearchParams(window.location.search);
-			nextParams.set('currency', currency ?? '');
+			nextParams.delete('currency');
 			nextParams.set('billing', billing);
 			window.history.replaceState({}, '', `${window.location.pathname}?${nextParams}`);
 		};
 
 		root.querySelectorAll('[data-price-filter]').forEach((element) => element.addEventListener('click', () => {
 			if (!(element instanceof HTMLButtonElement)) return;
-			if (element.dataset.priceFilter === 'currency') currency = element.dataset.value;
 			if (element.dataset.priceFilter === 'billing') billing = element.dataset.value ?? 'year';
 			update();
 		}));

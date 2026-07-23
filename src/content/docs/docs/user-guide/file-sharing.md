@@ -5,6 +5,8 @@ description: Publish files and folders with landing pages, direct links, passwor
 
 Sharing grants controlled access to an existing file; it does not copy the object or expose bucket credentials.
 
+![Share management in the English ZPan interface](/images/docs/shares.png)
+
 Use a **landing share** for people. It presents file information and supports password, expiration, download limits, folder browsing, and save-to-drive. Use a **direct share** for scripts, release artifacts, and embeds where an immediate object response is required.
 
 ## Create and test a share

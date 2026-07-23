@@ -5,6 +5,8 @@ description: Configure durable image URLs and connect PicGo, PicList, uPic, Shar
 
 Image hosting uses the same S3 backend as ZPan while adding path templates, public delivery settings, gallery management, and tool-specific API keys.
 
+![Image hosting settings in the English ZPan interface](/images/docs/image-hosting.png)
+
 ## Before connecting a client
 
 1. Confirm the administrator's storage connection test passes.

@@ -20,10 +20,6 @@ const mockCatalog: LicenseQuoteCatalog = {
 	version: 'mock-1',
 	updatedAt: '2026-07-22T00:00:00.000Z',
 	offers: [
-		{ sku: 'pro-cny-month', edition: 'pro', currency: 'CNY', billingPeriod: 'month', amountMinor: 5900, checkoutUrl: 'https://cloud.zpan.space' },
-		{ sku: 'pro-cny-year', edition: 'pro', currency: 'CNY', billingPeriod: 'year', amountMinor: 59000, checkoutUrl: 'https://cloud.zpan.space' },
-		{ sku: 'business-cny-month', edition: 'business', currency: 'CNY', billingPeriod: 'month', amountMinor: 19900, checkoutUrl: 'https://cloud.zpan.space' },
-		{ sku: 'business-cny-year', edition: 'business', currency: 'CNY', billingPeriod: 'year', amountMinor: 199000, checkoutUrl: 'https://cloud.zpan.space' },
 		{ sku: 'pro-usd-month', edition: 'pro', currency: 'USD', billingPeriod: 'month', amountMinor: 900, checkoutUrl: 'https://cloud.zpan.space' },
 		{ sku: 'pro-usd-year', edition: 'pro', currency: 'USD', billingPeriod: 'year', amountMinor: 9000, checkoutUrl: 'https://cloud.zpan.space' },
 		{ sku: 'business-usd-month', edition: 'business', currency: 'USD', billingPeriod: 'month', amountMinor: 2900, checkoutUrl: 'https://cloud.zpan.space' },
