@@ -52,6 +52,7 @@ export default defineConfig({
 			components: {
 				ThemeProvider: './src/components/LightThemeProvider.astro',
 				ThemeSelect: './src/components/EmptyThemeSelect.astro',
+				LanguageSelect: './src/components/LanguageSelect.astro',
 			},
 			logo: { src: './src/assets/logo.png', alt: 'ZPan' },
 			favicon: '/favicon.png',
