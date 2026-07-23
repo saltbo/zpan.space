@@ -37,7 +37,7 @@ docker compose logs -f zpan
 
 ZPan 监听 `8222` 端口。你可以先直接访问它确认服务启动，再通过 HTTPS 完成生产配置。新数据库中注册的第一个账号会自动成为站长管理员。
 
-Compose 中的 `zpan-data` Volume 保存 `/data/zpan.db`。真正需要保护的是 Volume，而不是容器。删除它会丢失用户、目录元数据、分享和站点设置；S3 中的对象文件则可能仍然存在。
+Compose 中的 `zpan-data` Volume 保存 `/data/zpan.db`。真正需要保护的是 Volume，而不是容器。删除它会丢失用户、目录元数据、分享和站点设置；S3 中的对象文件则可能仍然存在。Compose 默认以「项目名_卷名」命名卷，项目名取自当前目录名（部署目录通常就叫 `zpan`），因此该卷在主机上实际名为 `zpan_zpan-data`，后续备份命令中会使用这个完整名称。
 
 ## 配置 HTTPS
 

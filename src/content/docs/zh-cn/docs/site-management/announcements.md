@@ -7,7 +7,7 @@ sidebar:
 
 公告适合维护窗口、服务故障、策略变化、迁移和重要版本通知。它是 ZPan 内的醒目提示，不能代替长期文档或外部状态页。
 
-![ZPan 英文版管理后台的站点公告页面](/images/docs/admin-announcement.png)
+![ZPan 英文版管理控制台的站点公告页面](/images/docs/admin-announcement.png)
 
 先写结果：发生什么、影响谁、何时开始、用户需要做什么。使用包含时区的绝对日期和时间。需要操作步骤、截图或完整 Changelog 时，应链接到更详细的文档。
 

@@ -7,7 +7,7 @@ sidebar:
 
 邀请用户之前，应先完成站点基础设置。这些配置会影响登录、公开链接、新账号容量、反滥用、邮件和 WebDAV。
 
-![ZPan 英文版管理后台的站点设置](/images/docs/admin-settings.png)
+![ZPan 英文版管理控制台的站点设置](/images/docs/admin-settings.png)
 
 ## 推荐的首次配置顺序
 
@@ -20,7 +20,7 @@ sidebar:
 
 ## 正式域名与 Public URL
 
-进入 **管理后台 → 设置 → 站点标识**，填写最终 HTTPS Origin，例如 `https://files.example.com`。只填写 Scheme、Host，以及确有需要的非默认端口，不要包含路径、Query 或 Fragment。
+进入 **管理控制台 → 设置 → 站点标识**，填写最终 HTTPS Origin，例如 `https://files.example.com`。只填写 Scheme、Host，以及确有需要的非默认端口，不要包含路径、Query 或 Fragment。
 
 Public URL 用于分享链接、图床地址、WebDAV Discovery 等公开地址。认证 Callback 在配置 `BETTER_AUTH_URL` 时优先使用该值。两者都应与用户真正访问的域名一致。
 
